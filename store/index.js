@@ -1,6 +1,7 @@
 export const state = () => ({
   rtcToken: '123',
-  role: ''
+  role: '',
+  photographToken: ''
 })
 
 export const mutations = {
@@ -9,5 +10,8 @@ export const mutations = {
   },
   setRole(state, payload) {
     state.role = payload
+  },
+  setPhotographToken(state, payload) {
+    state.photographToken = payload
   }
 }

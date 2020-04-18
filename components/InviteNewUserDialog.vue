@@ -46,7 +46,9 @@ export default {
       }
     },
     inviteLink() {
-      return process.env.INVITE_HOST + '/connect?photographId=' + this.rtcToken
+      return (
+        process.env.INVITE_HOST + '/connect?photographToken=' + this.rtcToken
+      )
     }
   },
   watch: {
