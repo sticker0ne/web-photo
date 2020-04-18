@@ -1,5 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
+require('dotenv').config()
+
 export default {
   mode: 'spa',
   /*
@@ -26,7 +28,7 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['~/assets/stylesheets/index.scss'],
   /*
    ** Plugins to load before mounting the App
    */
@@ -61,9 +63,9 @@ export default {
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
+    customVariables: ['~/assets/stylesheets/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       themes: {
         dark: {
           primary: colors.blue.darken2,
