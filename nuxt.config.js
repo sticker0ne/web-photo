@@ -8,8 +8,7 @@ export default {
    ** Headers of the page
    */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    title: 'Web photo studio',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -20,6 +19,11 @@ export default {
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+  },
+  pwa: {
+    icon: {
+      /* icon options */
+    }
   },
   /*
    ** Customize the progress-bar color
@@ -47,6 +51,7 @@ export default {
    ** Nuxt.js modules
    */
   modules: [
+    'nuxt-rfg-icon',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',

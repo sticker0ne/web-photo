@@ -12,6 +12,9 @@
 <script>
 import { mapState, mapMutations } from 'vuex'
 import ChooseRoleDialog from '@/components/ChooseRoleDialog'
+import { ROLE_CAMERA, ROLE_MONITOR } from '@/assets/javascript/constants'
+
+const pathMapper = { [ROLE_MONITOR]: '/monitor', [ROLE_CAMERA]: '/camera' }
 export default {
   name: 'Connect',
   components: { ChooseRoleDialog },
@@ -19,6 +22,7 @@ export default {
     ...mapMutations(['setRole', 'setPhotographToken']),
     chooseRole(role) {
       this.setRole(role)
+      this.$router.push(pathMapper[role])
     }
   },
   computed: {
