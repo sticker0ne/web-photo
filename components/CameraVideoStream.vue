@@ -24,8 +24,9 @@
 </template>
 
 <script>
-import  Peer  from '@/assets/javascript/peer'
 import { requestMedia } from '@/assets/javascript/utils/userMedia'
+
+const Peer = window.Peer
 
 let localStream = null
 
