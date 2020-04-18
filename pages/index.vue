@@ -1,20 +1,23 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <camera-video-stream />
+      <stream-player :stream="localStream" />
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import { ROLE_PHOTOGRAPH } from '@/assets/javascript/constants'
-import CameraVideoStream from '@/components/CameraVideoStream'
+import StreamPlayer from '@/components/StreamPlayer'
 
 export default {
-  components: { CameraVideoStream },
+  components: { StreamPlayer },
   methods: {
     ...mapMutations(['setRole'])
+  },
+  computed: {
+    ...mapState({ localStream: (state) => state.media.localStream })
   },
   mounted() {
     this.setRole(ROLE_PHOTOGRAPH)

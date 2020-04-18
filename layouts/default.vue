@@ -27,7 +27,10 @@
 import { mapState, mapMutations } from 'vuex'
 import InviteNewUserDialog from '@/components/InviteNewUserDialog'
 import { ROLE_PHOTOGRAPH } from '@/assets/javascript/constants'
-import { createPeer } from '@/assets/javascript/utils/peers'
+import {
+  createPeer,
+  setStreamOnPeerCall
+} from '@/assets/javascript/utils/peers'
 import { requestMedia } from '@/assets/javascript/utils/userMedia'
 
 export default {
@@ -52,6 +55,7 @@ export default {
       try {
         const stream = await requestMedia()
         this.setLocalStream(stream)
+        setStreamOnPeerCall(stream)
         this.showInviteDialog = true
       } catch (err) {
         console.error(err) // TODO show error dialog

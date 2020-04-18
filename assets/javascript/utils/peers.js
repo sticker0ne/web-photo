@@ -2,7 +2,11 @@ import Peer from 'peerjs'
 
 let lastPeer = null
 
-export const getLastPeer = () => lastPeer
+export const setStreamOnPeerCall = (stream) => {
+  lastPeer.peer.on('call', (call) => {
+    call.answer(stream)
+  })
+}
 
 export const createPeer = () => {
   return new Promise((resolve, reject) => {
@@ -16,6 +20,7 @@ export const createPeer = () => {
 }
 
 export const callPeer = (peerToken, localStream) => {
+  debugger
   const peer = new Peer({})
   const call = peer.call(peerToken, localStream)
 

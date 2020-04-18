@@ -17,10 +17,6 @@ export const requestMedia = () => {
         )
       : navigator.mediaDevices.getUserMedia(constraints)
   } catch (e) {
-    return Promise.reject(
-      new Error(
-        `WebRTC navigator.getUserMedia() is not supported in your browser.`
-      )
-    )
+    return Promise.reject(new Error(e))
   }
 }
