@@ -1,12 +1,12 @@
 export const state = () => ({
-  rtcToken: '123',
+  peerToken: '',
   role: '',
   photographToken: ''
 })
 
 export const mutations = {
-  setRtcToken(state, payload) {
-    state.rtcToken = payload
+  setPeerToken(state, payload) {
+    state.peerToken = payload
   },
   setRole(state, payload) {
     state.role = payload

@@ -1,24 +1,27 @@
 import Peer from 'peerjs'
 
-export const createPeer = (localStream) => {
+let lastPeer = null
+
+export const getLastPeer = () => lastPeer
+
+export const createPeer = () => {
   return new Promise((resolve, reject) => {
     const peer = new Peer({})
-    peer.on('open', resolve)
-    peer.on('error', reject)
-    peer.on('call', (call) => {
-      call.answer(localStream)
+    peer.on('open', (peerToken) => {
+      lastPeer = { peerToken, peer }
+      resolve(lastPeer)
     })
+    peer.on('error', reject)
   })
 }
 
-export const callPeer = (peerId, localStream) => {
+export const callPeer = (peerToken, localStream) => {
   const peer = new Peer({})
-  const call = peer.call(peerId, localStream)
+  const call = peer.call(peerToken, localStream)
 
   return new Promise((resolve, reject) => {
     call.on('stream', (stream) => {
-      document.getElementById('cameraStream').srcObject = stream
-      resolve(call)
+      resolve(stream)
     })
   })
 }

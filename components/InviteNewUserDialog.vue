@@ -36,7 +36,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['rtcToken']),
+    ...mapState(['peerToken']),
     show: {
       get() {
         return this.value
@@ -47,7 +47,7 @@ export default {
     },
     inviteLink() {
       return (
-        process.env.INVITE_HOST + '/connect?photographToken=' + this.rtcToken
+        process.env.INVITE_HOST + '/connect?photographToken=' + this.peerToken
       )
     }
   },

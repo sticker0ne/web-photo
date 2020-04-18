@@ -1,11 +1,13 @@
 <template>
   <div class="camera-video-stream">
+    <div>LocalStream: {{ localStream }}</div>
     <video
       id="local"
       width="400px"
       height="300px"
       autoplay
       style="border: 3px solid green"
+      ref="localMediaPlayer"
     />
     <video
       id="cameraStream"
@@ -24,6 +26,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { requestMedia } from '@/assets/javascript/utils/userMedia'
 import { createPeer, callPeer } from '@/assets/javascript/utils/peers'
 
@@ -45,6 +48,9 @@ export default {
       })
       .catch((e) => console.error(e))
   },
+  computed: {
+    ...mapState({ localStream: 'media/localStream' })
+  },
   methods: {
     start() {
       createPeer(localStream).then((peerId) => {
@@ -53,7 +59,14 @@ export default {
     },
     call() {
       const peerId = this.peerId
-      callPeer(peerId, localStream)
+      callPeer(peerId, localStream).then((stream) => {
+        document.getElementById('cameraStream').srcObject = stream
+      })
+    }
+  },
+  watch: {
+    localStream(value) {
+      console.log({ value })
     }
   }
 }

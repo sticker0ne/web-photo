@@ -24,9 +24,11 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import InviteNewUserDialog from '@/components/InviteNewUserDialog'
 import { ROLE_PHOTOGRAPH } from '@/assets/javascript/constants'
+import { createPeer } from '@/assets/javascript/utils/peers'
+import { requestMedia } from '@/assets/javascript/utils/userMedia'
 
 export default {
   components: { InviteNewUserDialog },
@@ -36,21 +38,32 @@ export default {
     }
   },
   computed: {
-    ...mapState(['role', 'rtcToken']),
+    ...mapState(['role', 'peerToken']),
     showInviteBtn() {
-      return this.role === ROLE_PHOTOGRAPH && this.rtcToken.length > 0
+      return this.role === ROLE_PHOTOGRAPH && this.peerToken.length > 0
     }
   },
   methods: {
-    openInviteDialog() {
-      this.showInviteDialog = true
+    ...mapMutations({
+      setLocalStream: 'media/setLocalStream',
+      setPeerToken: 'setPeerToken'
+    }),
+    async openInviteDialog() {
+      try {
+        const stream = await requestMedia()
+        this.setLocalStream(stream)
+        this.showInviteDialog = true
+      } catch (err) {
+        console.error(err) // TODO show error dialog
+      }
     },
     closeInviteDialog() {
       this.showInviteDialog = false
     }
   },
-  mounted() {
-    console.clear()
+  async mounted() {
+    const peerWithId = await createPeer()
+    this.setPeerToken(peerWithId.peerToken)
   }
 }
 </script>
