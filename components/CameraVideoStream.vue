@@ -18,34 +18,23 @@
     <v-text-field v-model="hostPeerID" readonly />
     <v-btn @click="start">Start</v-btn>
     <br />
-    <v-text-field v-model="peerID" />
+    <v-text-field v-model="peerId" />
     <v-btn @click="call">Call</v-btn>
   </div>
 </template>
 
 <script>
-import Peer from 'peerjs'
-
 import { requestMedia } from '@/assets/javascript/utils/userMedia'
+import { createPeer, callPeer } from '@/assets/javascript/utils/peers'
 
 let localStream = null
-
-const createPeer = () => {
-  return new Promise((resolve, reject) => {
-    const peer = new Peer({})
-    peer.on('open', resolve)
-    peer.on('call', (call) => {
-      call.answer(localStream)
-    })
-  })
-}
 
 export default {
   name: 'CameraVideoStream',
   data() {
     return {
-      hostPeerID: '1',
-      peerID: '2'
+      hostPeerID: '',
+      peerId: ''
     }
   },
   mounted() {
@@ -58,21 +47,13 @@ export default {
   },
   methods: {
     start() {
-      createPeer().then((peerID) => {
-        this.hostPeerID = peerID
+      createPeer(localStream).then((peerId) => {
+        this.hostPeerID = peerId
       })
     },
     call() {
-      const peerID = this.peerID
-      const peer = new Peer({})
-      const call = peer.call(peerID, localStream)
-
-      return new Promise((resolve, reject) => {
-        call.on('stream', (stream) => {
-          document.getElementById('cameraStream').srcObject = stream
-          resolve(call)
-        })
-      })
+      const peerId = this.peerId
+      callPeer(peerId, localStream)
     }
   }
 }
