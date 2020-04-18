@@ -48,6 +48,9 @@ export default {
     closeInviteDialog() {
       this.showInviteDialog = false
     }
+  },
+  mounted() {
+    console.clear()
   }
 }
 </script>
