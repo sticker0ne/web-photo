@@ -19,11 +19,6 @@ export default {
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
-    /*script: [
-      {
-        src: 'https://unpkg.com/peerjs@1.0.0/dist/peerjs.min.js'
-      }
-    ]*/
   },
   pwa: {
     icon: {

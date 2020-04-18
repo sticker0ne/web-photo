@@ -1,11 +1,13 @@
 <template>
   <div class="camera-video-stream">
+    <div>LocalStream: {{ localStream }}</div>
     <video
       id="local"
       width="400px"
       height="300px"
       autoplay
       style="border: 3px solid green"
+      ref="localMediaPlayer"
     />
     <video
       id="cameraStream"
@@ -18,33 +20,24 @@
     <v-text-field v-model="hostPeerID" readonly />
     <v-btn @click="start">Start</v-btn>
     <br />
-    <v-text-field v-model="peerID" />
+    <v-text-field v-model="peerId" />
     <v-btn @click="call">Call</v-btn>
   </div>
 </template>
 
 <script>
-import  Peer  from '@/assets/javascript/peer'
+import { mapState } from 'vuex'
 import { requestMedia } from '@/assets/javascript/utils/userMedia'
+import { createPeer, callPeer } from '@/assets/javascript/utils/peers'
 
 let localStream = null
-
-const createPeer = () => {
-  return new Promise((resolve, reject) => {
-    const peer = new Peer({})
-    peer.on('open', resolve)
-    peer.on('call', (call) => {
-      call.answer(localStream)
-    })
-  })
-}
 
 export default {
   name: 'CameraVideoStream',
   data() {
     return {
-      hostPeerID: '1',
-      peerID: '2'
+      hostPeerID: '',
+      peerId: ''
     }
   },
   mounted() {
@@ -55,31 +48,25 @@ export default {
       })
       .catch((e) => console.error(e))
   },
+  computed: {
+    ...mapState({ localStream: 'media/localStream' })
+  },
   methods: {
     start() {
-      createPeer().then((peerID) => {
-        this.hostPeerID = peerID
+      createPeer(localStream).then((peerId) => {
+        this.hostPeerID = peerId
       })
     },
     call() {
-      const peerID = this.peerID
-      const peer = new Peer({})
-      const conn = peer.connect(peerID)
-      const call = peer.call(peerID, localStream)
-
-      conn.on('open', function() {
-        conn.on('data', function(data) {
-          console.log('Received', data)
-        })
-        conn.send('Hello!')
+      const peerId = this.peerId
+      callPeer(peerId, localStream).then((stream) => {
+        document.getElementById('cameraStream').srcObject = stream
       })
-
-      return new Promise((resolve, reject) => {
-        call.on('stream', (stream) => {
-          document.getElementById('cameraStream').srcObject = stream
-          resolve(call)
-        })
-      })
+    }
+  },
+  watch: {
+    localStream(value) {
+      console.log({ value })
     }
   }
 }
