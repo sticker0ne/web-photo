@@ -65,15 +65,7 @@ export default {
     call() {
       const peerID = this.peerID
       const peer = new Peer({})
-      const conn = peer.connect(peerID)
       const call = peer.call(peerID, localStream)
-
-      conn.on('open', function() {
-        conn.on('data', function(data) {
-          console.log('Received', data)
-        })
-        conn.send('Hello!')
-      })
 
       return new Promise((resolve, reject) => {
         call.on('stream', (stream) => {
