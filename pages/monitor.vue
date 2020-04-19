@@ -9,6 +9,8 @@
 import { mapState } from 'vuex'
 import { callPeer } from '@/assets/javascript/utils/peers'
 import StreamPlayer from '@/components/StreamPlayer'
+import { requestMedia } from '@/assets/javascript/utils/userMedia'
+
 export default {
   name: 'Monitor',
   components: { StreamPlayer },
@@ -23,10 +25,8 @@ export default {
     })
   },
   async mounted() {
-    this.photographStream = await callPeer(
-      this.photographToken,
-      new MediaStream()
-    )
+    const stream = await requestMedia()
+    this.photographStream = await callPeer(this.photographToken, stream)
   }
 }
 </script>

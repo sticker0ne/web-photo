@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'camera'
+  name: 'Camera'
 }
 </script>
 
