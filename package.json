@@ -27,7 +27,8 @@
     "@nuxtjs/pwa": "^3.0.0-0",
     "nuxt": "^2.0.0",
     "nuxt-rfg-icon": "^0.6.4",
-    "peerjs": "^1.0.0"
+    "peerjs": "^1.0.0",
+    "vue-peerjs": "^0.3.0"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.0.0",

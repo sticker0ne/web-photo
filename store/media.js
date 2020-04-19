@@ -3,7 +3,7 @@ export const state = () => ({
 })
 
 export const mutations = {
-  setLocalStream(state, payload) {
+  SET_LOCAL_STREAM(state, payload) {
     state.localStream = payload
   }
 }

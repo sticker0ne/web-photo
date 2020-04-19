@@ -1,17 +1,13 @@
 export const state = () => ({
-  peerToken: '',
   role: '',
   photographToken: ''
 })
 
 export const mutations = {
-  setPeerToken(state, payload) {
-    state.peerToken = payload
-  },
-  setRole(state, payload) {
+  SET_ROLE(state, payload) {
     state.role = payload
   },
-  setPhotographToken(state, payload) {
+  SET_PHOTOGRAPH_TOKEN(state, payload) {
     state.photographToken = payload
   }
 }

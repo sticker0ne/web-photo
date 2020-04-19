@@ -19,7 +19,10 @@ export default {
   name: 'Connect',
   components: { ChooseRoleDialog },
   methods: {
-    ...mapMutations(['setRole', 'setPhotographToken']),
+    ...mapMutations({
+      setRole: 'SET_ROLE',
+      setPhotographToken: 'SET_PHOTOGRAPH_TOKEN'
+    }),
     chooseRole(role) {
       this.setRole(role)
       this.$router.push(pathMapper[role])

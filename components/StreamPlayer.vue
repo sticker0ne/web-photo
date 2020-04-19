@@ -1,7 +1,6 @@
 <template>
   <div class="camera-video-stream">
     <video
-      id="local"
       ref="localStreamPlayer"
       width="400px"
       height="300px"
@@ -24,6 +23,9 @@ export default {
     stream(value) {
       this.$refs.localStreamPlayer.srcObject = value
     }
+  },
+  mounted() {
+    this.$refs.localStreamPlayer.srcObject = this.stream
   }
 }
 </script>

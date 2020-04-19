@@ -1,4 +1,4 @@
-export const requestMedia = () => {
+export const requestMedia = ({ audio = false, video = true } = {}) => {
   navigator.getUserMedia =
     navigator.getUserMedia ||
     navigator.webkitGetUserMedia ||
@@ -6,8 +6,8 @@ export const requestMedia = () => {
     navigator.msGetUserMedia
 
   const constraints = {
-    audio: false,
-    video: true
+    audio,
+    video
   }
 
   try {

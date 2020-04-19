@@ -1,32 +1,48 @@
 <template>
   <div>
     Monitor's page
-    <stream-player :stream="photographStream" />
+    <stream-player
+      v-for="cameraStream in cameraStreams"
+      :key="cameraStream.peerId"
+      :stream="cameraStream.stream"
+    />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import { callPeer } from '@/assets/javascript/utils/peers'
 import StreamPlayer from '@/components/StreamPlayer'
-import { requestMedia } from '@/assets/javascript/utils/userMedia'
 
 export default {
   name: 'Monitor',
   components: { StreamPlayer },
   data() {
     return {
-      photographStream: null
+      cameraStreams: []
+    }
+  },
+  watch: {
+    cameraPeerIds(value) {
+      setTimeout(() => {
+        debugger
+        this.cameraStreams = value.map((cameraPeerId) => {
+          const stream = this.$peer.connections[cameraPeerId][1].remoteStream
+          return { peerId: cameraPeerId, stream }
+        })
+      }, 500)
     }
   },
   computed: {
     ...mapState({
-      photographToken: (state) => state.photographToken
+      photographToken: (state) => state.photographToken,
+      cameraPeerIds: (state) => state.camera.cameraPeerIds
     })
   },
-  async mounted() {
-    const stream = await requestMedia()
-    this.photographStream = await callPeer(this.photographToken, stream)
+  mounted() {
+    const connection = this.$peer.connect(this.photographToken)
+    connection.on('open', () => {
+      connection.send('monitor')
+    })
   }
 }
 </script>
