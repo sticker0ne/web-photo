@@ -21,22 +21,20 @@ export default {
       cameraStreams: []
     }
   },
-  watch: {
-    cameraPeerIds(value) {
-      setTimeout(() => {
-        debugger
-        this.cameraStreams = value.map((cameraPeerId) => {
-          const stream = this.$peer.connections[cameraPeerId][1].remoteStream
-          return { peerId: cameraPeerId, stream }
-        })
-      }, 500)
-    }
-  },
   computed: {
     ...mapState({
       photographToken: (state) => state.photographToken,
-      cameraPeerIds: (state) => state.camera.cameraPeerIds
+      camerasConnections: (state) => state.camera.camerasConnections
     })
+  },
+  watch: {
+    camerasConnections(value) {
+      this.cameraStreams = value.map((cameraConnection) => {
+        const stream = this.$peer.connections[cameraConnection.peerId][1]
+          .remoteStream
+        return { peerId: cameraConnection.peerId, stream }
+      })
+    }
   },
   mounted() {
     const connection = this.$peer.connect(this.photographToken)

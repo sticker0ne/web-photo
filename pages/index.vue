@@ -25,34 +25,33 @@ export default {
       cameraStreams: []
     }
   },
-  methods: {
-    ...mapMutations({ setRole: 'SET_ROLE' })
-  },
   computed: {
     ...mapState({
       localStream: (state) => state.media.localStream,
-      cameraPeerIds: (state) => state.camera.cameraPeerIds
+      camerasConnections: (state) => state.camera.camerasConnections
     })
   },
   watch: {
-    cameraPeerIds(value) {
-      setTimeout(() => {
-        this.cameraStreams = value.map((cameraPeerId) => {
-          const stream = this.$peer.connections[cameraPeerId][0].remoteStream
-          return { peerId: cameraPeerId, stream }
-        })
-      }, 500)
+    camerasConnections(value) {
+      this.cameraStreams = value.map((cameraConnection) => {
+        const stream = this.$peer.connections[cameraConnection.peerId][0]
+          .remoteStream
+        return { peerId: cameraConnection.peerId, stream }
+      })
+    }
+  },
+  methods: {
+    ...mapMutations({ setRole: 'SET_ROLE' }),
+    callMonitor({ peerId }) {
+      this.$peer.call(peerId, this.localStream)
     }
   },
   mounted() {
     this.setRole(ROLE_PHOTOGRAPH)
-    eventBus.$on('callMonitor', ({ peer }) => {
-      debugger
-      this.$peer.call(peer, this.localStream)
-    })
+    eventBus.$on('callMonitor', this.callMonitor)
   },
   beforeDestroy() {
-    eventBus.$off('callMonitor')
+    eventBus.$off('callMonitor', this.callMonitor)
   }
 }
 </script>

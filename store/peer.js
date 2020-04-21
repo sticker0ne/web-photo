@@ -12,15 +12,8 @@ export const mutations = {
     const connection = args[0]
     connection.on('data', (msg) => {
       if (msg === 'monitor') {
-        eventBus.$emit('callMonitor', { peer: connection.peer })
+        eventBus.$emit('callMonitor', { peerId: connection.peer })
       }
     })
-  }
-}
-
-export const actions = {
-  peer_data({ commit }, payload) {
-    console.log(payload)
-    console.log('this action will be called')
   }
 }
