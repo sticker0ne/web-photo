@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :value="true" max-width="500" persistent>
+  <v-dialog :value="peerId" max-width="500" persistent>
     <v-card>
       <v-card-title class="headline">Выбирите роль устройства</v-card-title>
 
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { ROLE_CAMERA, ROLE_MONITOR } from '@/assets/javascript/constants'
 
 export default {
@@ -32,6 +33,9 @@ export default {
       ROLE_CAMERA,
       ROLE_MONITOR
     }
+  },
+  computed: {
+    ...mapState({ peerId: (state) => state.peer.peerId })
   },
   methods: {
     confirmDialog(role) {
