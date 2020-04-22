@@ -27,8 +27,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
-import { requestMedia } from '@/assets/javascript/utils/userMedia'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'InviteNewUserDialog',
   props: {
@@ -51,24 +50,11 @@ export default {
       return process.env.INVITE_HOST + '/connect?photographToken=' + this.peerId
     }
   },
-  watch: {
-    show(value) {
-      if (value) {
-        setTimeout(() => {
-          this.selectText()
-        }, 20)
-      }
-    }
-  },
   methods: {
-    ...mapMutations({ setLocalStream: 'media/SET_LOCAL_STREAM' }),
+    ...mapActions({
+      requestAndSetLocalStream: 'media/requestAndSetLocalStream'
+    }),
 
-    async requestAndSetLocalStream() {
-      const stream = await requestMedia()
-      if (!stream) return false
-      this.setLocalStream(stream)
-      return true
-    },
     closeInviteDialog() {
       this.showDialog = false
     },

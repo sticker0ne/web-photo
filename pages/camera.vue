@@ -3,18 +3,24 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import { requestMedia } from '@/assets/javascript/utils/userMedia'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'Camera',
   computed: {
     ...mapState({
-      photographToken: (state) => state.photograph.photographToken
+      photographToken: (state) => state.photograph.photographToken,
+      localStream: (state) => state.media.localStream
     })
   },
   async mounted() {
-    const stream = await requestMedia({ audio: false, video: true })
-    this.$peer.call(this.photographToken, stream)
+    await this.requestAndSetLocalStream({ audio: false, video: true })
+    this.callPhotograph(this.$peer)
+  },
+  methods: {
+    ...mapActions({
+      requestAndSetLocalStream: 'media/requestAndSetLocalStream',
+      callPhotograph: 'photograph/callPhotograph'
+    })
   }
 }
 </script>

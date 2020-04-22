@@ -18,9 +18,9 @@ export const mutations = {
 }
 
 export const actions = {
-  peer_call({ commit }, { args }) {
+  peer_call({ commit, rootState }, { args }) {
     const call = args[0]
-    call.answer()
+    call.answer(rootState.media.localStream)
 
     call.peerConnection.onconnectionstatechange = function(connection) {
       const { connectionState } = connection.target
