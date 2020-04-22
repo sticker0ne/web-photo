@@ -32,7 +32,7 @@ export default {
     ...mapState({
       role: (state) => state.role,
       peerId: (state) => state.peer.peerId,
-      photographToken: (state) => state.photographToken
+      photographToken: (state) => state.photograph.photographToken
     }),
     peerIsOpen() {
       return this.peerId.length > 0
@@ -46,7 +46,7 @@ export default {
       this.setPhotographToken(this.$route.query.photographToken)
   },
   methods: {
-    ...mapMutations({ setPhotographToken: 'SET_PHOTOGRAPH_TOKEN' })
+    ...mapMutations({ setPhotographToken: 'photograph/SET_PHOTOGRAPH_TOKEN' })
   }
 }
 </script>

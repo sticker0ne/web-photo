@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     ...mapState({
-      photographToken: (state) => state.photographToken,
+      photographToken: (state) => state.photograph.photographToken,
       camerasConnections: (state) => state.camera.camerasConnections
     })
   },

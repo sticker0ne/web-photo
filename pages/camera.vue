@@ -8,7 +8,9 @@ import { requestMedia } from '@/assets/javascript/utils/userMedia'
 export default {
   name: 'Camera',
   computed: {
-    ...mapState({ photographToken: (state) => state.photographToken })
+    ...mapState({
+      photographToken: (state) => state.photograph.photographToken
+    })
   },
   async mounted() {
     const stream = await requestMedia({ audio: false, video: true })

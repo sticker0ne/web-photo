@@ -23,8 +23,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setRole: 'SET_ROLE',
-      setPhotographToken: 'SET_PHOTOGRAPH_TOKEN'
+      setRole: 'SET_ROLE'
     }),
     chooseRole(role) {
       this.setRole(role)
