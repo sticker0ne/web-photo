@@ -9,14 +9,14 @@
           <v-progress-circular indeterminate size="64" />
           <v-card-text>{{ loaderText }}</v-card-text>
         </v-overlay>
-        <nuxt />
+        <nuxt v-if="peerIsOpen" />
       </v-container>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import InviteNewUserDialog from '@/components/InviteNewUserDialog'
 import { ROLE_PHOTOGRAPH } from '@/assets/javascript/constants'
 
@@ -31,7 +31,8 @@ export default {
   computed: {
     ...mapState({
       role: (state) => state.role,
-      peerId: (state) => state.peer.peerId
+      peerId: (state) => state.peer.peerId,
+      photographToken: (state) => state.photographToken
     }),
     peerIsOpen() {
       return this.peerId.length > 0
@@ -39,6 +40,13 @@ export default {
     roleIsPhotographAndPeerIsOpen() {
       return this.role === ROLE_PHOTOGRAPH && this.peerIsOpen
     }
+  },
+  mounted() {
+    if (!this.photographToken?.length)
+      this.setPhotographToken(this.$route.query.photographToken)
+  },
+  methods: {
+    ...mapMutations({ setPhotographToken: 'SET_PHOTOGRAPH_TOKEN' })
   }
 }
 </script>

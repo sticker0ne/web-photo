@@ -18,6 +18,9 @@ const pathMapper = { [ROLE_MONITOR]: '/monitor', [ROLE_CAMERA]: '/camera' }
 export default {
   name: 'Connect',
   components: { ChooseRoleDialog },
+  computed: {
+    ...mapState(['role'])
+  },
   methods: {
     ...mapMutations({
       setRole: 'SET_ROLE',
@@ -25,14 +28,11 @@ export default {
     }),
     chooseRole(role) {
       this.setRole(role)
-      this.$router.push(pathMapper[role])
+      this.$router.push({
+        path: pathMapper[role],
+        query: { photographToken: this.$route.query.photographToken }
+      })
     }
-  },
-  computed: {
-    ...mapState(['role'])
-  },
-  mounted() {
-    this.setPhotographToken(this.$route.query.photographToken)
   }
 }
 </script>
