@@ -1,12 +1,14 @@
+let mediaStreams = []
+
 export const state = () => ({
   camerasConnections: []
 })
 
-export const getters = {}
-
 export const mutations = {
   ADD_CAMERA(state, payload) {
-    state.camerasConnections = [...state.camerasConnections, payload]
+    const { stream, ...cameraConnection } = payload
+    state.camerasConnections = [...state.camerasConnections, cameraConnection]
+    mediaStreams.push(payload)
   },
   REMOVE_CAMERA(state, payload) {
     state.camerasConnections = [
@@ -14,6 +16,23 @@ export const mutations = {
         (camera) => camera.connectionId !== payload
       )
     ]
+
+    mediaStreams = [
+      ...mediaStreams.filter(
+        (mediaStream) => mediaStream.connectionId !== payload
+      )
+    ]
+  }
+}
+
+export const getters = {
+  getCameras(state) {
+    return state.camerasConnections.map((cameraConnection) => {
+      const stream = mediaStreams.find(
+        (mediaStream) => mediaStream.peerId === cameraConnection.peerId
+      )
+      return { ...cameraConnection, stream: stream.stream }
+    })
   }
 }
 
@@ -27,7 +46,8 @@ export const actions = {
       if (connectionState === 'connected') {
         commit('ADD_CAMERA', {
           peerId: call.peer,
-          connectionId: call.connectionId
+          connectionId: call.connectionId,
+          stream: connection.target.getRemoteStreams()[0]
         })
       }
 

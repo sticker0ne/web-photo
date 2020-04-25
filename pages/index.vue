@@ -1,42 +1,35 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <stream-player :stream="localStream" />
+      <stream-player :stream="localStream" label="Вы" hideActions />
       <stream-player
-        v-for="cameraConnection in camerasConnections"
-        :key="cameraConnection.peerId"
-        :stream="$peer.connections[cameraConnection.peerId][0].remoteStream"
+        v-for="peer in connectedPeers"
+        :key="peer.peerId"
+        :stream="peer.remoteStream"
+        :data-channel="peer.dataChannel"
+        :peer-id="peer.peerId"
+        label="camera"
       />
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState, mapGetters } from 'vuex'
 import { ROLE_PHOTOGRAPH } from '@/assets/javascript/constants'
 import StreamPlayer from '@/components/StreamPlayer'
-import { eventBus } from '@/assets/javascript/utils/eventBus'
 
 export default {
   components: { StreamPlayer },
   computed: {
-    ...mapState({
-      localStream: (state) => state.media.localStream,
-      camerasConnections: (state) => state.camera.camerasConnections
-    })
+    ...mapState({ localStream: (state) => state.media.localStream }),
+    ...mapGetters({ connectedPeers: 'peer/getConnectedPeers' })
   },
   methods: {
-    ...mapMutations({ setRole: 'SET_ROLE' }),
-    callMonitor({ peerId }) {
-      this.$peer.call(peerId, this.localStream)
-    }
+    ...mapMutations({ setRole: 'SET_ROLE' })
   },
   mounted() {
     this.setRole(ROLE_PHOTOGRAPH)
-    eventBus.$on('callMonitor', this.callMonitor)
-  },
-  beforeDestroy() {
-    eventBus.$off('callMonitor', this.callMonitor)
   }
 }
 </script>

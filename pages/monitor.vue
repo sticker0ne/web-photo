@@ -1,26 +1,30 @@
 <template>
-  <div>
-    Monitor's page
-    <stream-player
-      v-for="cameraConnection in camerasConnections"
-      :key="cameraConnection.peerId"
-      :stream="$peer.connections[cameraConnection.peerId][0].remoteStream"
-    />
-  </div>
+  <v-layout column justify-center align-center>
+    <v-flex xs12 sm8 md6>
+      <stream-player :stream="localStream" label="Вы" hide-actions />
+      <stream-player
+        v-for="peer in connectedPeers"
+        :key="peer.peerId"
+        :stream="peer.remoteStream"
+        :data-channel="peer.dataChannel"
+        :peer-id="peer.peerId"
+        label="photograph"
+        hide-actions
+      />
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import StreamPlayer from '@/components/StreamPlayer'
 
 export default {
   name: 'Monitor',
   components: { StreamPlayer },
   computed: {
-    ...mapState({
-      photographToken: (state) => state.photograph.photographToken,
-      camerasConnections: (state) => state.camera.camerasConnections
-    })
+    ...mapState({ localStream: (state) => state.media.localStream }),
+    ...mapGetters({ connectedPeers: 'peer/getConnectedPeers' })
   },
   async mounted() {
     await this.requestAndSetLocalStream({ audio: true, video: true })

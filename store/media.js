@@ -1,4 +1,5 @@
 import { requestMedia } from '@/assets/javascript/utils/userMedia'
+import { setLocalStream } from '@/assets/javascript/utils/dataChannelUtils'
 
 export const state = () => ({
   localStream: null
@@ -6,6 +7,7 @@ export const state = () => ({
 
 export const mutations = {
   SET_LOCAL_STREAM(state, payload) {
+    setLocalStream(payload)
     state.localStream = payload
   }
 }

@@ -1,11 +1,17 @@
 <template>
-  <div>Camera's page</div>
+  <v-layout column justify-center align-center>
+    <v-flex xs12 sm8 md6>
+      <stream-player :stream="localStream" label="Вы" hide-actions />
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import StreamPlayer from '@/components/StreamPlayer'
 export default {
   name: 'Camera',
+  components: { StreamPlayer },
   computed: {
     ...mapState({
       photographToken: (state) => state.photograph.photographToken,

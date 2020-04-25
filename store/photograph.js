@@ -9,7 +9,7 @@ export const mutations = {
 }
 
 export const actions = {
-  callPhotograph({ rootState, commit }, peer) {
+  callPhotograph({ rootState, commit, dispatch }, peer) {
     const call = peer.call(
       rootState.photograph.photographToken,
       rootState.media.localStream
@@ -20,10 +20,24 @@ export const actions = {
       if (connectionState === 'connected') {
         commit(
           'camera/ADD_CAMERA',
-          { peerId: call.peer, connectionId: call.connectionId },
+          {
+            peerId: call.peer,
+            connectionId: call.connectionId,
+            stream: call.remoteStream
+          },
           { root: true }
         )
       }
     }
+
+    const connection = peer.connect(rootState.photograph.photographToken)
+    dispatch(
+      'dataChannel/addChannel',
+      {
+        peerId: rootState.photograph.photographToken,
+        channel: connection.dataChannel
+      },
+      { root: true }
+    )
   }
 }
