@@ -1,7 +1,7 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <stream-player :stream="localStream" label="Вы" hideActions muted />
+      <stream-player :stream="localStream" hideActions muted fixed />
       <stream-player
         v-for="peer in connectedPeers"
         :key="peer.peerId"

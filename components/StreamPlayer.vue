@@ -1,14 +1,7 @@
 <template>
-  <v-card class="mx-auto">
-    <v-card-title>{{ label }}</v-card-title>
-    <video
-      ref="localStreamPlayer"
-      width="400px"
-      height="300px"
-      autoplay
-      playsinline
-      :muted="muted"
-    />
+  <v-card class="mx-auto" :class="{ fixed }">
+    <v-card-title v-if="label.length">{{ label }}</v-card-title>
+    <video ref="localStreamPlayer" autoplay playsinline :muted="muted" />
     <v-card-actions v-if="!hideActions">
       <v-btn color="orange" text @click="takePhoto">
         Сделать фотографию
@@ -44,6 +37,10 @@ export default {
     muted: {
       type: Boolean,
       default: false
+    },
+    fixed: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
@@ -62,4 +59,16 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.fixed {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  padding: 0;
+
+  video {
+    max-height: 300px;
+    height: max(18vh, 18vw);
+  }
+}
+</style>

@@ -1,7 +1,7 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <stream-player :stream="localStream" label="Вы" hide-actions muted />
+      <stream-player :stream="localStream" hide-actions muted fixed />
     </v-flex>
   </v-layout>
 </template>
