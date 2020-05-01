@@ -5,6 +5,17 @@ export const requestMedia = ({ audio = false, video = true } = {}) => {
     navigator.mozGetUserMedia ||
     navigator.msGetUserMedia
 
+  video = video
+    ? {
+        width: { ideal: 1280 },
+        height: { ideal: 720 },
+        frameRate: {
+          ideal: 30
+        },
+        aspectRatio: 1.777777778
+      }
+    : video
+
   const constraints = {
     audio,
     video

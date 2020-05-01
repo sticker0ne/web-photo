@@ -61,6 +61,7 @@ export default {
 
 <style scoped lang="scss">
 .fixed {
+  z-index: 100;
   position: fixed;
   right: 10px;
   bottom: 10px;
