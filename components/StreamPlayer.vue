@@ -1,7 +1,14 @@
 <template>
   <v-card class="mx-auto">
     <v-card-title>{{ label }}</v-card-title>
-    <video ref="localStreamPlayer" width="400px" height="300px" autoplay />
+    <video
+      ref="localStreamPlayer"
+      width="400px"
+      height="300px"
+      autoplay
+      playsinline
+      :muted="muted"
+    />
     <v-card-actions v-if="!hideActions">
       <v-btn color="orange" text @click="takePhoto">
         Сделать фотографию
@@ -31,6 +38,10 @@ export default {
       default: ''
     },
     hideActions: {
+      type: Boolean,
+      default: false
+    },
+    muted: {
       type: Boolean,
       default: false
     }
