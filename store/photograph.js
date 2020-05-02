@@ -39,5 +39,21 @@ export const actions = {
       },
       { root: true }
     )
+  },
+  reCallPhotograph({ rootState, commit, dispatch }, peer) {
+    dispatch('peer/closeAll', {}, { root: true })
+
+    const connectionsKeys = Object.keys(peer.connections)
+    connectionsKeys.forEach((key) => {
+      const channels = peer.connections[key]
+      channels.forEach((channel) => {
+        if (channel.dataChannel) channel.close()
+      })
+      channels.forEach((channel) => {
+        channel.close()
+      })
+    })
+
+    dispatch('callPhotograph', peer)
   }
 }

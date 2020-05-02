@@ -32,7 +32,7 @@ export const mutations = {
   },
   CLOSE_ALL_DATA_CHANNELS(state) {
     dataChannelsObjects.forEach((dataChannel) => {
-      dataChannel.channel.close()
+      if (dataChannel.channel) dataChannel.channel.close()
     })
     state.dataChannelsDesc = []
   }

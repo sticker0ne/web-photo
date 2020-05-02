@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app color="blue" dark flat>
+      <switch-camera />
       <invite-new-user-dialog v-if="roleIsPhotographAndPeerIsOpen" />
     </v-app-bar>
     <v-content>
@@ -9,6 +10,7 @@
           <v-progress-circular indeterminate size="64" />
           <v-card-text>{{ loaderText }}</v-card-text>
         </v-overlay>
+        {{ videoInputs }}
         <nuxt v-if="peerIsOpen" />
       </v-container>
     </v-content>
@@ -19,9 +21,10 @@
 import { mapState, mapMutations } from 'vuex'
 import InviteNewUserDialog from '@/components/InviteNewUserDialog'
 import { ROLE_PHOTOGRAPH } from '@/assets/javascript/constants'
+import SwitchCamera from '@/components/SwitchCamera'
 
 export default {
-  components: { InviteNewUserDialog },
+  components: { SwitchCamera, InviteNewUserDialog },
   data() {
     return {
       showInviteDialog: false,
@@ -32,7 +35,8 @@ export default {
     ...mapState({
       role: (state) => state.role,
       peerId: (state) => state.peer.peerId,
-      photographToken: (state) => state.photograph.photographToken
+      photographToken: (state) => state.photograph.photographToken,
+      videoInputs: (state) => state.media.videoInputs
     }),
     peerIsOpen() {
       return this.peerId.length > 0
