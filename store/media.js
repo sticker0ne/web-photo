@@ -15,7 +15,7 @@ export const mutations = {
 export const actions = {
   async requestAndSetLocalStream(
     { commit },
-    params = { audio: false, video: true }
+    params = { audio: false, video: true, facingMode: 'user' }
   ) {
     const stream = await requestMedia(params)
     commit('SET_LOCAL_STREAM', stream)

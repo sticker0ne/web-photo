@@ -27,7 +27,11 @@ export default {
     ...mapGetters({ connectedPeers: 'peer/getConnectedPeers' })
   },
   async mounted() {
-    await this.requestAndSetLocalStream({ audio: true, video: true })
+    await this.requestAndSetLocalStream({
+      audio: true,
+      video: true,
+      facingMode: 'user'
+    })
     this.callPhotograph(this.$peer)
   },
   methods: {

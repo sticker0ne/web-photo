@@ -60,7 +60,11 @@ export default {
     },
     async openInviteDialog() {
       if (!this.localStream)
-        await this.requestAndSetLocalStream({ audio: true, video: true })
+        await this.requestAndSetLocalStream({
+          audio: true,
+          video: true,
+          facingMode: 'user'
+        })
       if (!this.localStream) return
       this.showDialog = true
     },

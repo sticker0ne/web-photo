@@ -19,7 +19,11 @@ export default {
     })
   },
   async mounted() {
-    await this.requestAndSetLocalStream({ audio: false, video: true })
+    await this.requestAndSetLocalStream({
+      audio: false,
+      video: true,
+      facingMode: 'environment'
+    })
     this.callPhotograph(this.$peer)
   },
   methods: {

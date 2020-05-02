@@ -1,4 +1,8 @@
-export const requestMedia = ({ audio = false, video = true } = {}) => {
+export const requestMedia = ({
+  audio = false,
+  video = true,
+  facingMode = 'user'
+} = {}) => {
   navigator.getUserMedia =
     navigator.getUserMedia ||
     navigator.webkitGetUserMedia ||
@@ -12,7 +16,10 @@ export const requestMedia = ({ audio = false, video = true } = {}) => {
         frameRate: {
           ideal: 30
         },
-        aspectRatio: 1.777777778
+        aspectRatio: 1.777777778,
+        facingMode: {
+          ideal: facingMode
+        }
       }
     : video
 
