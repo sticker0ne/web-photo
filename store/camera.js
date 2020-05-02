@@ -22,6 +22,11 @@ export const mutations = {
         (mediaStream) => mediaStream.connectionId !== payload
       )
     ]
+  },
+
+  CLOSE_ALL_CAMERAS(state) {
+    state.camerasConnections = []
+    mediaStreams = []
   }
 }
 

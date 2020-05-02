@@ -36,7 +36,11 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~/plugins/vueUse', '~/plugins/peerSetup'],
+  plugins: [
+    '~/plugins/vueUse',
+    '~/plugins/peerSetup',
+    '~/plugins/globalEventListeners'
+  ],
   /*
    ** Nuxt.js dev-modules
    */

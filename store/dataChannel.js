@@ -29,6 +29,12 @@ export const mutations = {
     state.dataChannelsDesc = [
       ...state.dataChannelsDesc.filter((desc) => desc.label !== payload)
     ]
+  },
+  CLOSE_ALL_DATA_CHANNELS(state) {
+    dataChannelsObjects.forEach((dataChannel) => {
+      dataChannel.channel.close()
+    })
+    state.dataChannelsDesc = []
   }
 }
 

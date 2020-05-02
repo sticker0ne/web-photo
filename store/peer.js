@@ -30,4 +30,9 @@ export const mutations = {
   }
 }
 
-export const actions = {}
+export const actions = {
+  closeAll({ rootState, commit }) {
+    commit('camera/CLOSE_ALL_CAMERAS', {}, { root: true })
+    commit('dataChannel/CLOSE_ALL_DATA_CHANNELS', {}, { root: true })
+  }
+}
