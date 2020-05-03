@@ -8,13 +8,17 @@ export function getLocalStream() {
   return _localStream
 }
 
-export function onDataChannelMessage(dataChannelEvent, peerId) {
+export async function onDataChannelMessage(dataChannelEvent, peerId) {
   console.log(
     `data channel recived from peer ${peerId} message: `,
     dataChannelEvent
   )
 
   if (dataChannelEvent.data === TAKE_PHOTO) {
+    const imageCapture = new ImageCapture(_localStream.getVideoTracks()[0])
+    const blob = await imageCapture.takePhoto()
+    console.log(blob)
+    debugger
     dataChannelEvent.target.send(OK)
   }
 }
