@@ -1,7 +1,14 @@
 <template>
   <v-card class="mx-auto" :class="{ fixed }">
     <v-card-title v-if="label.length">{{ label }}</v-card-title>
-    <video ref="localStreamPlayer" autoplay playsinline :muted="muted" />
+    <video
+      ref="localStreamPlayer"
+      autoplay
+      playsinline
+      :muted="muted"
+      @click.prevent.stop
+      @touchstart.prevent.stop
+    />
     <v-card-actions v-if="!hideActions">
       <v-btn color="orange" text @click="takePhoto">
         Сделать фотографию

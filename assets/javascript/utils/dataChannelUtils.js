@@ -1,6 +1,6 @@
 import { OK, TAKE_PHOTO } from '@/assets/javascript/constants'
 
-let _localStream = ''
+let _localStream = null
 export function setLocalStream(localStream) {
   _localStream = localStream
 }
