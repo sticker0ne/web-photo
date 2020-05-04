@@ -27,17 +27,43 @@ export const mutations = {
 }
 
 export const actions = {
-  createOrJoinRoom({ commit }, role) {
+  createOrJoinRoom({ commit, rootState }, role) {
     const event = role === ROLE_PHOTOGRAPH ? 'createRoom' : 'joinRoom'
-    socketInstance.io.emit(event)
+    if (event === 'createRoom') socketInstance.io.emit(event)
+    if (event === 'joinRoom')
+      socketInstance.io.emit(event, rootState.photographToken)
   },
 
-  socket_connect({ commit }) {
+  socket_connect({ commit, rootState }) {
     commit('SET_CONNECTED_VALUE', true)
     commit('SET_SOCKET_ID', socketInstance.io.id)
-    commit('SET_PHOTOGRAPH_TOKEN', socketInstance.io.id, { root: true })
+    if (!rootState.photographToken.length)
+      commit('SET_PHOTOGRAPH_TOKEN', socketInstance.io.id, { root: true })
   },
-  socket_roomCreated({ commit }, room) {
-    commit('SET_ROOM', room)
+  socket_roomCreated({ commit }, event) {
+    commit('SET_ROOM', event.room)
+  },
+  socket_clientJoined({ commit, state, rootState }, event) {
+    if (event.clientId !== state.socketId) return
+    commit('SET_ROOM', event.room)
+    socketInstance.io.emit('emitToRoom', {
+      roomId: state.room,
+      eventType: 'callMe',
+      payload: {
+        photographToken: rootState.photographToken,
+        descriptor: 'desc',
+        role: rootState.role
+      }
+    })
+  },
+  socket_callMe({ commit, state }, event) {
+    if (event.payload.photographToken === state.socketId) {
+      console.log(
+        'I am photograph, i will call ' +
+          event.payload.role +
+          ' with descriptor ' +
+          event.payload.descriptor
+      )
+    }
   }
 }

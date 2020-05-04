@@ -42,7 +42,10 @@ export default {
     }
   },
   mounted() {
-    if (!this.photographToken?.length)
+    if (
+      !this.photographToken?.length &&
+      this.$route.query.photographToken?.length
+    )
       this.setPhotographToken(this.$route.query.photographToken)
   },
   methods: {

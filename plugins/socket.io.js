@@ -4,7 +4,7 @@ import VueSocketIO from 'vue-socket.io'
 export default function({ store }) {
   const socket = new VueSocketIO({
     debug: true,
-    connection: 'http://fastfood.tom.ru:2500',
+    connection: 'wss://mirt.webshot.me',
     vuex: {
       store,
       actionPrefix: 'socket_',

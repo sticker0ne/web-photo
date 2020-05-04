@@ -8,7 +8,8 @@ export const mutations = {
     state.role = payload
   },
   SET_PHOTOGRAPH_TOKEN(state, payload) {
-    state.photographToken = payload
+    if (!state.photographToken.length && payload.length)
+      state.photographToken = payload
   }
 }
 
