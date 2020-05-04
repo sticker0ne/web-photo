@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <v-app-bar app color="blue" dark flat>
+    <div>
       <switch-camera />
       <invite-new-user-dialog v-if="roleIsPhotographAndPeerIsOpen" />
-    </v-app-bar>
+    </div>
     <v-content>
       <v-container>
         <v-overlay :value="!peerIsOpen" align="center" opacity="0.9">

@@ -1,7 +1,7 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <stream-player :stream="localStream" hide-actions muted fixed />
+      <stream-player :stream="localStream" hide-actions muted full-screen />
     </v-flex>
   </v-layout>
 </template>
@@ -35,4 +35,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style lang="scss">
+.v-application--wrap {
+  background-color: #343334;
+}
+</style>
