@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :value="peerId" max-width="500" persistent>
+  <v-dialog :value="socketId" max-width="500" persistent>
     <v-card>
       <v-card-title class="headline">Выбирите роль устройства</v-card-title>
 
@@ -35,7 +35,7 @@ export default {
     }
   },
   computed: {
-    ...mapState({ peerId: (state) => state.peer.peerId })
+    ...mapState({ socketId: (state) => state.socket.socketId })
   },
   methods: {
     confirmDialog(role) {

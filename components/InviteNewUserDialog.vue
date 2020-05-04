@@ -44,10 +44,14 @@ export default {
   computed: {
     ...mapState({
       localStream: (state) => state.media.localStream,
-      peerId: (state) => state.peer.peerId
+      photographToken: (state) => state.photographToken
     }),
     inviteLink() {
-      return process.env.INVITE_HOST + '/connect?photographToken=' + this.peerId
+      return (
+        process.env.INVITE_HOST +
+        '/connect?photographToken=' +
+        this.photographToken
+      )
     }
   },
   methods: {

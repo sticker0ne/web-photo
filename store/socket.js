@@ -32,12 +32,12 @@ export const actions = {
     socketInstance.io.emit(event)
   },
 
-  socket_connect({ commit, ...oth }) {
+  socket_connect({ commit }) {
     commit('SET_CONNECTED_VALUE', true)
     commit('SET_SOCKET_ID', socketInstance.io.id)
+    commit('SET_PHOTOGRAPH_TOKEN', socketInstance.io.id, { root: true })
   },
   socket_roomCreated({ commit }, room) {
-    debugger
     commit('SET_ROOM', room)
   }
 }

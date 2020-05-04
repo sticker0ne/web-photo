@@ -39,8 +39,6 @@ export default {
   plugins: [
     '~/plugins/vueUse',
     '~/plugins/socket.io',
-    '~/plugins/peerSetup',
-    '~/plugins/globalEventListeners',
     '~/node_modules/image-capture/lib/imagecapture.js'
   ],
   /*

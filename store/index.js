@@ -1,10 +1,14 @@
 export const state = () => ({
-  role: ''
+  role: '',
+  photographToken: ''
 })
 
 export const mutations = {
   SET_ROLE(state, payload) {
     state.role = payload
+  },
+  SET_PHOTOGRAPH_TOKEN(state, payload) {
+    state.photographToken = payload
   }
 }
 

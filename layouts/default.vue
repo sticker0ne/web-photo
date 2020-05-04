@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <div>
-      <invite-new-user-dialog v-if="roleIsPhotographAndPeerIsOpen" />
+      <invite-new-user-dialog v-if="roleIsPhotograph" />
     </div>
     <v-content>
       <v-container>
@@ -9,7 +9,6 @@
           <v-progress-circular indeterminate size="64" />
           <v-card-text>{{ loaderText }}</v-card-text>
         </v-overlay>
-        {{ videoInputs }}
         <nuxt v-if="socketIsConnected" />
       </v-container>
     </v-content>
@@ -33,18 +32,13 @@ export default {
     ...mapState({
       socketId: (state) => state.socket.socketId,
       role: (state) => state.role,
-      peerId: (state) => state.peer.peerId,
-      photographToken: (state) => state.photograph.photographToken,
-      videoInputs: (state) => state.media.videoInputs
+      photographToken: (state) => state.photographToken
     }),
     socketIsConnected() {
       return this.socketId.length
     },
-    peerIsOpen() {
-      return this.peerId.length > 0
-    },
-    roleIsPhotographAndPeerIsOpen() {
-      return this.role === ROLE_PHOTOGRAPH && this.peerIsOpen
+    roleIsPhotograph() {
+      return this.role === ROLE_PHOTOGRAPH
     }
   },
   mounted() {
@@ -52,7 +46,7 @@ export default {
       this.setPhotographToken(this.$route.query.photographToken)
   },
   methods: {
-    ...mapMutations({ setPhotographToken: 'photograph/SET_PHOTOGRAPH_TOKEN' })
+    ...mapMutations({ setPhotographToken: 'SET_PHOTOGRAPH_TOKEN' })
   }
 }
 </script>
