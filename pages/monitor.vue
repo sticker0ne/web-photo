@@ -1,15 +1,21 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <stream-player :stream="localStream" hide-actions muted fixed />
+      <stream-player
+        :stream="localStream"
+        hide-actions
+        muted
+        fixed
+        show-camera-switch-button
+      />
       <stream-player
         v-for="peer in connectedPeers"
         :key="peer.peerId"
         :stream="peer.remoteStream"
         :data-channel="peer.dataChannel"
         :peer-id="peer.peerId"
-        label="photograph"
         hide-actions
+        full-screen
       />
     </v-flex>
   </v-layout>
@@ -43,4 +49,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style lang="scss">
+.v-application--wrap {
+  background-color: #343334;
+}
+</style>

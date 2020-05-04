@@ -1,19 +1,28 @@
 <template>
   <v-card
     class="mx-auto stream-player-card"
-    :class="{ fixed, 'no-stream': !stream, 'full-screen': fullScreen }"
+    :class="{
+      fixed,
+      'no-stream': !stream,
+      'full-screen': fullScreen,
+      'max-width': fullscreenSizeClass === 'max-width',
+      'max-height': fullscreenSizeClass === 'max-height'
+    }"
   >
     <v-card-title v-if="label.length">{{ label }}</v-card-title>
-    <video
-      ref="localStreamPlayer"
-      autoplay
-      playsinline
-      :muted="muted"
-      @click.prevent.stop
-      @touchstart.prevent.stop
-    />
+    <div class="video-wrapper">
+      <video
+        ref="localStreamPlayer"
+        autoplay
+        playsinline
+        :muted="muted"
+        @click.prevent.stop
+        @touchstart.prevent.stop
+      />
+    </div>
+
     <div v-if="showPlaceholder" class="video-placeholder">
-      <img class="person-icon" src="~/static/icons/person-black-18dp.svg" />
+      <img class="person-icon" src="icons/person-black-18dp.svg" />
       <div class="break" />
       <div class="placeholder-text">You</div>
     </div>
@@ -72,27 +81,68 @@ export default {
   data() {
     return {
       showPlaceholder: true,
-      showSwitchCamera: false
+      showSwitchCamera: false,
+      windowWidth: 0,
+      windowHeight: 0,
+      streamSettings: null,
+      setStreamSettingsInterval: null
+    }
+  },
+  computed: {
+    fullscreenSizeClass() {
+      const { windowWidth, windowHeight, streamSettings } = this
+      if (!(windowHeight && windowWidth && streamSettings)) return 'max-width'
+      const trackRatio = streamSettings.aspectRatio
+      const windowRatio = windowWidth / windowHeight
+
+      return windowRatio > trackRatio ? 'max-height' : 'max-width'
     }
   },
   watch: {
     stream(value) {
-      if (value)
+      this.applySettingsByStream(value)
+      this.$refs.localStreamPlayer.srcObject = value
+      this.runStreamSettingsInterval()
+    }
+  },
+  mounted() {
+    this.$refs.localStreamPlayer.srcObject = this.stream
+    this.applySettingsByStream(this.stream)
+    this.runStreamSettingsInterval()
+    window.addEventListener('resize', this.onWindowResize)
+    this.onWindowResize()
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onWindowResize)
+  },
+  methods: {
+    runStreamSettingsInterval() {
+      this.setStreamSettingsInterval = setInterval(() => {
+        this.setStreamSettings()
+      }, 10)
+    },
+    setStreamSettings() {
+      const videoTrack = this.stream?.getVideoTracks().length
+        ? this.stream?.getVideoTracks()[0]
+        : null
+      this.streamSettings = videoTrack ? videoTrack.getSettings() : null
+      if (this.streamSettings?.aspectRatio || !this.stream)
+        clearInterval(this.setStreamSettingsInterval)
+    },
+    onWindowResize() {
+      this.windowHeight = window.innerHeight
+      this.windowWidth = window.innerWidth
+    },
+    takePhoto() {
+      this.dataChannel.send('TAKE_PHOTO')
+    },
+    applySettingsByStream(stream) {
+      if (stream)
         setTimeout(() => {
           this.showPlaceholder = false
           this.showSwitchCamera = true
         }, 300)
       else this.showPlaceholder = true
-
-      this.$refs.localStreamPlayer.srcObject = value
-    }
-  },
-  mounted() {
-    this.$refs.localStreamPlayer.srcObject = this.stream
-  },
-  methods: {
-    takePhoto() {
-      this.dataChannel.send('TAKE_PHOTO')
     }
   }
 }
@@ -110,6 +160,8 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 10px;
+  background-color: #343334;
+  border-radius: 5px !important;
 
   img {
     height: 70%;
@@ -126,12 +178,19 @@ export default {
 }
 
 .full-screen {
-  video {
+  .video-wrapper {
     z-index: 90;
     position: fixed;
     top: 0;
     left: 0;
+    border-radius: 0 !important;
     width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  video {
     border-radius: 0 !important;
   }
 
@@ -143,6 +202,20 @@ export default {
     height: 100vh;
     width: 100vw;
     border-radius: 0 !important;
+  }
+
+  &.max-width {
+    video {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &.max-height {
+    video {
+      width: auto;
+      height: 100%;
+    }
   }
 }
 
