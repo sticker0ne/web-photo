@@ -17,6 +17,7 @@
       <div class="break" />
       <div class="placeholder-text">You</div>
     </div>
+    <switch-camera v-if="showCameraSwitchButton && showSwitchCamera" />
     <v-card-actions v-if="!hideActions">
       <v-btn color="orange" text @click="takePhoto">
         Сделать фотографию
@@ -26,8 +27,10 @@
 </template>
 
 <script>
+import SwitchCamera from '@/components/SwitchCamera'
 export default {
   name: 'StreamPlayer',
+  components: { SwitchCamera },
   props: {
     stream: {
       type: MediaStream,
@@ -60,11 +63,16 @@ export default {
     fullScreen: {
       type: Boolean,
       default: false
+    },
+    showCameraSwitchButton: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      showPlaceholder: true
+      showPlaceholder: true,
+      showSwitchCamera: false
     }
   },
   watch: {
@@ -72,6 +80,7 @@ export default {
       if (value)
         setTimeout(() => {
           this.showPlaceholder = false
+          this.showSwitchCamera = true
         }, 300)
       else this.showPlaceholder = true
 

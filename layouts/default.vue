@@ -1,7 +1,6 @@
 <template>
   <v-app>
     <div>
-      <switch-camera />
       <invite-new-user-dialog v-if="roleIsPhotographAndPeerIsOpen" />
     </div>
     <v-content>
@@ -21,10 +20,9 @@
 import { mapState, mapMutations } from 'vuex'
 import InviteNewUserDialog from '@/components/InviteNewUserDialog'
 import { ROLE_PHOTOGRAPH } from '@/assets/javascript/constants'
-import SwitchCamera from '@/components/SwitchCamera'
 
 export default {
-  components: { SwitchCamera, InviteNewUserDialog },
+  components: { InviteNewUserDialog },
   data() {
     return {
       showInviteDialog: false,

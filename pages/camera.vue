@@ -1,7 +1,13 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <stream-player :stream="localStream" hide-actions muted full-screen />
+      <stream-player
+        :stream="localStream"
+        hide-actions
+        muted
+        full-screen
+        show-camera-switch-button
+      />
     </v-flex>
   </v-layout>
 </template>
