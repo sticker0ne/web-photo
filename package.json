@@ -30,7 +30,8 @@
     "nuxt": "^2.0.0",
     "nuxt-rfg-icon": "^0.6.4",
     "peerjs": "^1.0.0",
-    "vue-peerjs": "^0.3.0"
+    "vue-peerjs": "^0.3.0",
+    "vue-socket.io": "^3.0.8"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.0.0",

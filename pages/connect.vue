@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import ChooseRoleDialog from '@/components/ChooseRoleDialog'
 import { ROLE_CAMERA, ROLE_MONITOR } from '@/assets/javascript/constants'
 
@@ -22,8 +22,8 @@ export default {
     ...mapState(['role'])
   },
   methods: {
-    ...mapMutations({
-      setRole: 'SET_ROLE'
+    ...mapActions({
+      setRole: 'setRole'
     }),
     chooseRole(role) {
       this.setRole(role)

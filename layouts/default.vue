@@ -5,12 +5,12 @@
     </div>
     <v-content>
       <v-container>
-        <v-overlay :value="!peerIsOpen" align="center" opacity="0.9">
+        <v-overlay :value="!socketIsConnected" align="center" opacity="0.9">
           <v-progress-circular indeterminate size="64" />
           <v-card-text>{{ loaderText }}</v-card-text>
         </v-overlay>
         {{ videoInputs }}
-        <nuxt v-if="peerIsOpen" />
+        <nuxt v-if="socketIsConnected" />
       </v-container>
     </v-content>
   </v-app>
@@ -31,11 +31,15 @@ export default {
   },
   computed: {
     ...mapState({
+      socketId: (state) => state.socket.socketId,
       role: (state) => state.role,
       peerId: (state) => state.peer.peerId,
       photographToken: (state) => state.photograph.photographToken,
       videoInputs: (state) => state.media.videoInputs
     }),
+    socketIsConnected() {
+      return this.socketId.length
+    },
     peerIsOpen() {
       return this.peerId.length > 0
     },

@@ -7,3 +7,10 @@ export const mutations = {
     state.role = payload
   }
 }
+
+export const actions = {
+  setRole({ commit, dispatch }, role) {
+    this.commit('SET_ROLE', role)
+    this.dispatch('socket/createOrJoinRoom', role, { root: true })
+  }
+}
