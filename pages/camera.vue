@@ -20,7 +20,6 @@ export default {
   components: { StreamPlayer },
   computed: {
     ...mapState({
-      photographToken: (state) => state.photograph.photographToken,
       localStream: (state) => state.media.localStream
     })
   },
@@ -30,12 +29,10 @@ export default {
       video: true,
       facingMode: 'environment'
     })
-    this.callPhotograph(this.$peer)
   },
   methods: {
     ...mapActions({
-      requestAndSetLocalStream: 'media/requestAndSetLocalStream',
-      callPhotograph: 'photograph/callPhotograph'
+      requestAndSetLocalStream: 'media/requestAndSetLocalStream'
     })
   }
 }

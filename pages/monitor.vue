@@ -9,7 +9,7 @@
         show-camera-switch-button
       />
       <stream-player
-        v-for="peer in connectedPeers"
+        v-for="peer in []"
         :key="peer.peerId"
         :stream="peer.remoteStream"
         :data-channel="peer.dataChannel"
@@ -22,15 +22,14 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import StreamPlayer from '@/components/StreamPlayer'
 
 export default {
   name: 'Monitor',
   components: { StreamPlayer },
   computed: {
-    ...mapState({ localStream: (state) => state.media.localStream }),
-    ...mapGetters({ connectedPeers: 'peer/getConnectedPeers' })
+    ...mapState({ localStream: (state) => state.media.localStream })
   },
   async mounted() {
     await this.requestAndSetLocalStream({
@@ -38,12 +37,10 @@ export default {
       video: true,
       facingMode: 'user'
     })
-    this.callPhotograph(this.$peer)
   },
   methods: {
     ...mapActions({
-      requestAndSetLocalStream: 'media/requestAndSetLocalStream',
-      callPhotograph: 'photograph/callPhotograph'
+      requestAndSetLocalStream: 'media/requestAndSetLocalStream'
     })
   }
 }
