@@ -9,11 +9,9 @@
         show-camera-switch-button
       />
       <stream-player
-        v-for="peer in []"
-        :key="peer.peerId"
-        :stream="peer.remoteStream"
-        :data-channel="peer.dataChannel"
-        :peer-id="peer.peerId"
+        v-for="connection in connections"
+        :key="connection.id"
+        :stream="connection.stream"
         hide-actions
         full-screen
       />
@@ -22,14 +20,15 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 import StreamPlayer from '@/components/StreamPlayer'
 
 export default {
   name: 'Monitor',
   components: { StreamPlayer },
   computed: {
-    ...mapState({ localStream: (state) => state.media.localStream })
+    ...mapState({ localStream: (state) => state.media.localStream }),
+    ...mapGetters({ connections: 'webRTC/connections' })
   },
   async mounted() {
     await this.requestAndSetLocalStream({
@@ -37,10 +36,12 @@ export default {
       video: true,
       facingMode: 'user'
     })
+    this.emitCallMe()
   },
   methods: {
     ...mapActions({
-      requestAndSetLocalStream: 'media/requestAndSetLocalStream'
+      requestAndSetLocalStream: 'media/requestAndSetLocalStream',
+      emitCallMe: 'socket/emitCallMe'
     })
   }
 }

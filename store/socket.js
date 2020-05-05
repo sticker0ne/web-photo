@@ -55,6 +55,9 @@ export const actions = {
   socket_clientJoined({ commit, state, rootState }, event) {
     if (event.clientId !== state.socketId) return
     commit('SET_ROOM_ID', event.roomId)
+  },
+
+  emitCallMe({ rootState, state }) {
     socketInstance.io.emit('emitToRoom', {
       roomId: state.roomId,
       eventType: 'callMe',

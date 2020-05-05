@@ -9,7 +9,6 @@ export const state = () => ({
 
 export const getters = {
   connections(state) {
-    debugger
     const readyKeys = []
 
     const stateConnectionsKeys = Object.keys(state.connections)

@@ -3,9 +3,9 @@
     <v-flex xs12 sm8 md6>
       <stream-player :stream="localStream" hide-actions muted fixed />
       <stream-player
-        v-for="(peer, index) in streams"
-        :key="index"
-        :stream="peer.stream"
+        v-for="connection in connections"
+        :key="connection.id"
+        :stream="connection.stream"
         label="camera"
       />
     </v-flex>
@@ -21,7 +21,7 @@ export default {
   components: { StreamPlayer },
   computed: {
     ...mapState({ localStream: (state) => state.media.localStream }),
-    ...mapGetters({ streams: 'webRTC/streams' })
+    ...mapGetters({ connections: 'webRTC/connections' })
   },
   methods: {
     ...mapActions({ setRole: 'setRole' })
