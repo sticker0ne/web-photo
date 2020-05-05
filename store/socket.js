@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import { ROLE_PHOTOGRAPH } from '@/assets/javascript/constants'
 
 let socketInstance = null

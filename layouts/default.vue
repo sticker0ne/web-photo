@@ -16,9 +16,9 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import InviteNewUserDialog from '@/components/InviteNewUserDialog'
-import { ROLE_PHOTOGRAPH } from '@/assets/javascript/constants'
+import { PATH_ROLE_MAP, ROLE_PHOTOGRAPH } from '@/assets/javascript/constants'
 
 export default {
   components: { InviteNewUserDialog },
@@ -42,14 +42,33 @@ export default {
     }
   },
   mounted() {
-    if (
-      !this.photographToken?.length &&
-      this.$route.query.photographToken?.length
-    )
-      this.setPhotographToken(this.$route.query.photographToken)
+    this.setPhotographTokenFromRoute()
+    this.setRoleFromRoute()
   },
   methods: {
-    ...mapMutations({ setPhotographToken: 'SET_PHOTOGRAPH_TOKEN' })
+    ...mapMutations({ setPhotographToken: 'SET_PHOTOGRAPH_TOKEN' }),
+    ...mapActions({ setRole: 'setRole' }),
+
+    setPhotographTokenFromRoute() {
+      if (
+        !this.photographToken?.length &&
+        this.$route.query.photographToken?.length
+      )
+        this.setPhotographToken(this.$route.query.photographToken)
+    },
+    setRoleFromRoute() {
+      const path = this.$route.path
+      const role = PATH_ROLE_MAP[path]
+
+      if (!role || this.role.length) return
+      this.setRole(role)
+    }
+  },
+  watch: {
+    $route() {
+      this.setPhotographTokenFromRoute()
+      this.setRoleFromRoute()
+    }
   }
 }
 </script>

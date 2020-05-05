@@ -1,16 +1,12 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <choose-role-dialog
-        v-if="!this.role.length"
-        @confirmDialog="chooseRole"
-      />
+      <choose-role-dialog @confirmDialog="chooseRole" />
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
 import ChooseRoleDialog from '@/components/ChooseRoleDialog'
 import { ROLE_CAMERA, ROLE_MONITOR } from '@/assets/javascript/constants'
 
@@ -18,15 +14,8 @@ const pathMapper = { [ROLE_MONITOR]: '/monitor', [ROLE_CAMERA]: '/camera' }
 export default {
   name: 'Connect',
   components: { ChooseRoleDialog },
-  computed: {
-    ...mapState(['role'])
-  },
   methods: {
-    ...mapActions({
-      setRole: 'setRole'
-    }),
     chooseRole(role) {
-      this.setRole(role)
       this.$router.push({
         path: pathMapper[role],
         query: { photographToken: this.$route.query.photographToken }
