@@ -3,11 +3,9 @@
     <v-flex xs12 sm8 md6>
       <stream-player :stream="localStream" hide-actions muted fixed />
       <stream-player
-        v-for="peer in []"
-        :key="peer.peerId"
-        :stream="peer.remoteStream"
-        :data-channel="peer.dataChannel"
-        :peer-id="peer.peerId"
+        v-for="(peer, index) in streams"
+        :key="index"
+        :stream="peer.stream"
         label="camera"
       />
     </v-flex>
@@ -15,14 +13,15 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 import { ROLE_PHOTOGRAPH } from '@/assets/javascript/constants'
 import StreamPlayer from '@/components/StreamPlayer'
 
 export default {
   components: { StreamPlayer },
   computed: {
-    ...mapState({ localStream: (state) => state.media.localStream })
+    ...mapState({ localStream: (state) => state.media.localStream }),
+    ...mapGetters({ streams: 'webRTC/streams' })
   },
   methods: {
     ...mapActions({ setRole: 'setRole' })

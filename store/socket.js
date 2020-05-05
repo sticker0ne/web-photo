@@ -49,12 +49,12 @@ export const actions = {
   socket_error({ commit }, event) {
     console.error(`Socket error: ${event}`)
   },
-  socket_roomCreated({ commit }, event) {
-    commit('SET_ROOM_ID', event.room)
+  socket_roomCreated({ commit, state }, event) {
+    if (!state.roomId?.length) commit('SET_ROOM_ID', event.roomId)
   },
   socket_clientJoined({ commit, state, rootState }, event) {
     if (event.clientId !== state.socketId) return
-    commit('SET_ROOM_ID', event.room)
+    commit('SET_ROOM_ID', event.roomId)
     socketInstance.io.emit('emitToRoom', {
       roomId: state.roomId,
       eventType: 'callMe',
@@ -65,14 +65,55 @@ export const actions = {
       }
     })
   },
-  socket_callMe({ commit, state }, event) {
+  async socket_callMe({ dispatch, state }, event) {
     if (event.payload.photographToken === state.socketId) {
-      console.log(
-        'I am photograph, i will call ' +
-          event.payload.role +
-          ' with descriptor ' +
-          event.payload.descriptor
+      const wrappedOffer = await dispatch(
+        'webRTC/createRTCConnection',
+        {},
+        { root: true }
       )
+
+      socketInstance.io.emit('emitToRoom', {
+        roomId: state.roomId,
+        eventType: 'setOffer',
+        payload: {
+          targetId: event.clientId,
+          wrappedOffer
+        }
+      })
     }
+  },
+
+  async socket_setOffer({ dispatch, state }, event) {
+    if (event.payload.targetId === state.socketId) {
+      const connectionId = event.payload.wrappedOffer.connectionId
+      const answer = await dispatch(
+        'webRTC/setOffer',
+        event.payload.wrappedOffer.offer,
+        {
+          root: true
+        }
+      )
+
+      socketInstance.io.emit('emitToRoom', {
+        roomId: state.roomId,
+        eventType: 'setAnswer',
+        payload: {
+          targetId: event.clientId,
+          wrappedAnswer: { answer, connectionId }
+        }
+      })
+    }
+  },
+
+  async socket_setAnswer({ dispatch, state }, event) {
+    if (event.payload.targetId === state.socketId) {
+      await dispatch('webRTC/setAnswer', event.payload.wrappedAnswer, {
+        root: true
+      })
+    }
+  },
+  getSocketInstance() {
+    return socketInstance
   }
 }

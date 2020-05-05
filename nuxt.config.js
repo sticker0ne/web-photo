@@ -39,7 +39,8 @@ export default {
   plugins: [
     '~/plugins/vueUse',
     '~/plugins/socket.io',
-    '~/node_modules/image-capture/lib/imagecapture.js'
+    '~/node_modules/image-capture/lib/imagecapture.js',
+    '~/node_modules/@ungap/event-target/min.js'
   ],
   /*
    ** Nuxt.js dev-modules
