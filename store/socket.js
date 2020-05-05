@@ -6,7 +6,7 @@ let socketInstance = null
 export const state = () => ({
   connected: false,
   socketId: '',
-  room: null
+  roomId: null
 })
 
 export const getters = {}
@@ -21,8 +21,8 @@ export const mutations = {
   SET_SOCKET_ID(state, payload) {
     state.socketId = payload
   },
-  SET_ROOM(state, payload) {
-    state.room = payload
+  SET_ROOM_ID(state, payload) {
+    state.roomId = payload
   }
 }
 
@@ -40,14 +40,24 @@ export const actions = {
     if (!rootState.photographToken.length)
       commit('SET_PHOTOGRAPH_TOKEN', socketInstance.io.id, { root: true })
   },
+
+  socket_disconnect({ commit }) {
+    console.error('socket disconnected')
+    commit('SET_CONNECTED_VALUE', false)
+    commit('SET_SOCKET_ID', '')
+    commit('SET_ROOM_ID', '')
+  },
+  socket_error({ commit }, event) {
+    console.error(`Socket error: ${event}`)
+  },
   socket_roomCreated({ commit }, event) {
-    commit('SET_ROOM', event.room)
+    commit('SET_ROOM_ID', event.room)
   },
   socket_clientJoined({ commit, state, rootState }, event) {
     if (event.clientId !== state.socketId) return
-    commit('SET_ROOM', event.room)
+    commit('SET_ROOM_ID', event.room)
     socketInstance.io.emit('emitToRoom', {
-      roomId: state.room,
+      roomId: state.roomId,
       eventType: 'callMe',
       payload: {
         photographToken: rootState.photographToken,
