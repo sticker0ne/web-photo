@@ -18,6 +18,7 @@ export default {
         content: process.env.npm_package_description || ''
       }
     ],
+    script: [{ src: '/polyfills/eventTargetPolyfill.js' }],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
   pwa: {
@@ -39,8 +40,7 @@ export default {
   plugins: [
     '~/plugins/vueUse',
     '~/plugins/socket.io',
-    '~/node_modules/image-capture/lib/imagecapture.js',
-    '~/node_modules/@ungap/event-target/min.js'
+    '~/node_modules/image-capture/lib/imagecapture.js'
   ],
   /*
    ** Nuxt.js dev-modules

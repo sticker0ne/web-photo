@@ -37,13 +37,17 @@ export const actions = {
 
     pc.addStream(stream)
     pc.addEventListener('stream', (event) => {
-      wrappedConnections[event.currentTarget.id].stream = event.stream
       commit('SET_CONNECTION_STATE', {
-        id: event.currentTarget.id,
+        id: pc.id,
         state: 'ready'
       })
     })
+
     wrappedConnections[pc.id] = pc
+    commit('SET_CONNECTION_STATE', {
+      id: pc.id,
+      state: 'ready'
+    })
 
     return new Promise((resolve) => {
       pc.addEventListener('offer', (event) => {
@@ -59,13 +63,17 @@ export const actions = {
 
     pc.addStream(stream)
     pc.addEventListener('stream', (event) => {
-      wrappedConnections[event.currentTarget.id].stream = event.stream
       commit('SET_CONNECTION_STATE', {
-        id: event.currentTarget.id,
+        id: pc.id,
         state: 'ready'
       })
     })
+
     wrappedConnections[pc.id] = pc
+    commit('SET_CONNECTION_STATE', {
+      id: pc.id,
+      state: 'ready'
+    })
 
     return new Promise((resolve) => {
       pc.addEventListener('offer', (event) => {
