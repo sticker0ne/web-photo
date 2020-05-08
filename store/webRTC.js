@@ -1,5 +1,6 @@
 import { PeerConnection } from '@/assets/javascript/WebRTCUtils/peer-connection'
 import { STUN_SERVERS } from '@/assets/javascript/constants'
+import { onDataChannelMessage } from '@/assets/javascript/utils/dataChannelUtils'
 
 const wrappedConnections = {}
 
@@ -32,56 +33,12 @@ export const mutations = {
 export const actions = {
   createRTCConnection({ rootState, commit }) {
     console.log('createRTCConnection')
-    const pc = new PeerConnection({ iceServers: STUN_SERVERS })
-    const stream = rootState.media.localStream
-
-    pc.addStream(stream)
-    pc.addEventListener('stream', (event) => {
-      commit('SET_CONNECTION_STATE', {
-        id: pc.id,
-        state: 'ready'
-      })
-    })
-
-    wrappedConnections[pc.id] = pc
-    commit('SET_CONNECTION_STATE', {
-      id: pc.id,
-      state: 'ready'
-    })
-
-    return new Promise((resolve) => {
-      pc.addEventListener('offer', (event) => {
-        resolve({ offer: event.offer, connectionId: pc.id })
-      })
-      pc.createOffer()
-    })
+    return createAndSubscribeConnection(rootState, commit)
   },
+
   setOffer({ commit, rootState }, offer) {
     console.log('setOffer')
-    const pc = new PeerConnection({ iceServers: STUN_SERVERS })
-    const stream = rootState.media.localStream
-
-    pc.addStream(stream)
-    pc.addEventListener('stream', (event) => {
-      commit('SET_CONNECTION_STATE', {
-        id: pc.id,
-        state: 'ready'
-      })
-    })
-
-    wrappedConnections[pc.id] = pc
-    commit('SET_CONNECTION_STATE', {
-      id: pc.id,
-      state: 'ready'
-    })
-
-    return new Promise((resolve) => {
-      pc.addEventListener('offer', (event) => {
-        resolve(event.offer)
-      })
-      const session = new RTCSessionDescription(offer)
-      pc.setOffer(session)
-    })
+    return createAndSubscribeConnection(rootState, commit, offer)
   },
   setAnswer({ commit }, wrappedAnswer) {
     console.log('setAnswer')
@@ -92,4 +49,55 @@ export const actions = {
   gc() {
     return wrappedConnections
   }
+}
+
+/*
+    Helpers
+ */
+function triggerConnectionState(connectionId, state, commit) {
+  commit('SET_CONNECTION_STATE', {
+    id: connectionId,
+    state
+  })
+}
+
+function createAndSubscribeConnection(rootState, commit, offer) {
+  // Creates and subscribe pc
+  const pc = new PeerConnection({ iceServers: STUN_SERVERS })
+  const stream = rootState.media.localStream
+
+  pc.addStream(stream)
+  pc.addEventListener('stream', (event) => {
+    triggerConnectionState(pc.id, 'ready', commit)
+  })
+  pc.addEventListener('dataChannelOpen', () => {
+    debugger
+    triggerConnectionState(pc.id, 'ready', commit)
+  })
+
+  pc.addEventListener('dataChannelMessage', (event) => {
+    onDataChannelMessage(event.dataChannelEvent)
+  })
+
+  wrappedConnections[pc.id] = pc
+  triggerConnectionState(pc.id, 'ready', commit)
+
+  // If connections is new (createRTCConnection)
+  if (!offer)
+    return new Promise((resolve) => {
+      pc.addEventListener('offer', (event) => {
+        resolve({ offer: event.offer, connectionId: pc.id })
+      })
+      pc.createOffer()
+    })
+
+  // If we get an offer from photograph (setOffer)
+  if (offer)
+    return new Promise((resolve) => {
+      pc.addEventListener('offer', (event) => {
+        resolve(event.offer)
+      })
+      const session = new RTCSessionDescription(offer)
+      pc.setOffer(session)
+    })
 }

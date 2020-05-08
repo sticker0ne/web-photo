@@ -12,6 +12,7 @@
         v-for="connection in connections"
         :key="connection.id"
         :stream="connection.stream"
+        :data-channel="connection.dataChannel"
         hide-actions
         full-screen
       />

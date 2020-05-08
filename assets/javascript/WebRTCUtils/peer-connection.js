@@ -16,39 +16,9 @@ export class PeerConnection extends EventTarget {
       this._onIceCandidate(event)
     )
     this._pc.addEventListener('track', (event) => this._onTrack(event))
-
-    this._dataChannelPromise = null
-
-    this._pc.addEventListener('datachannel', (event) => {
-      const dataChannel = event.channel
-      this.dataChannel = dataChannel
-      if (this._dataChannelPromise) {
-        console.error('Second dataChannel?')
-      }
-      this._dataChannelPromise = Promise.resolve(dataChannel)
-    })
-  }
-
-  async sendData(data) {
-    const dataChannel = await this.getDataChannel()
-    dataChannel.send(data)
-  }
-
-  getDataChannel() {
-    if (!this._dataChannelPromise) {
-      this._dataChannelPromise = new Promise((resolve, reject) => {
-        const dataChannel = this._pc.createDataChannel('source')
-        dataChannel.addEventListener('message', (event) =>
-          this.dispatchEvent(event)
-        )
-        dataChannel.addEventListener('open', (event) => resolve(dataChannel))
-        dataChannel.addEventListener('close', (event) => {
-          this._dataChannelPromise = null
-          reject(dataChannel)
-        })
-      })
+    this._pc.onsignalingstatechange = (event) => {
+      if (event.target.signalingState === 'stable') window.pc = event.target
     }
-    return this._dataChannelPromise().then((channel) => channel)
   }
 
   async createOffer() {

@@ -6,6 +6,7 @@
         v-for="connection in connections"
         :key="connection.id"
         :stream="connection.stream"
+        :data-channel="connection.dataChannel"
         label="camera"
       />
     </v-flex>
