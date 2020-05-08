@@ -13,15 +13,15 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import StreamPlayer from '@/components/StreamPlayer'
+
 export default {
   name: 'Camera',
   components: { StreamPlayer },
   computed: {
-    ...mapState({
-      localStream: (state) => state.media.localStream
-    })
+    ...mapState({ localStream: (state) => state.media.localStream }),
+    ...mapGetters({ connections: 'webRTC/connections' })
   },
   async mounted() {
     await this.requestAndSetLocalStream({
@@ -29,10 +29,12 @@ export default {
       video: true,
       facingMode: 'environment'
     })
+    this.emitCallMe()
   },
   methods: {
     ...mapActions({
-      requestAndSetLocalStream: 'media/requestAndSetLocalStream'
+      requestAndSetLocalStream: 'media/requestAndSetLocalStream',
+      emitCallMe: 'socket/emitCallMe'
     })
   }
 }

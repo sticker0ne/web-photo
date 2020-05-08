@@ -81,14 +81,14 @@ export function dataUrlToChunkedArray(dataUrl, chunkSize = 10000) {
   return chunks
 }
 
-export function sendChunkedArray(chunkedArray, dataChannel) {
+export async function sendChunkedArray(chunkedArray, dataChannel) {
   const wrappedChunks = wrapChunks(chunkedArray)
   const stringifiedWrappedChunks = wrappedChunks.map((wrappedChunk) =>
     JSON.stringify(wrappedChunk)
   )
   for (let i = 0; i < stringifiedWrappedChunks.length; i++) {
     dataChannel.send(stringifiedWrappedChunks[i])
-    // await new Promise((resolve) => setTimeout(resolve, 100))
+    await new Promise((resolve) => setTimeout(resolve, 1))
   }
 }
 
