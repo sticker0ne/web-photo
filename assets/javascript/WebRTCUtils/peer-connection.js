@@ -18,7 +18,7 @@ export class PeerConnection extends EventTarget {
     this._pc.ondatachannel = (event) => {
       this.dispatchEvent(new Event('ondatachannel'))
       event.channel.addEventListener('message', (event2) => {
-        onDataChannelMessage(event2)
+        onDataChannelMessage(event2, this.dataChannel)
       })
     }
 

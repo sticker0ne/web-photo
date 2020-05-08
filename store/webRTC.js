@@ -70,8 +70,7 @@ function createAndSubscribeConnection(rootState, commit, offer) {
   pc.addEventListener('stream', (event) => {
     triggerConnectionState(pc.id, 'ready', commit)
   })
-  pc.addEventListener('dataChannelOpen', () => {
-    debugger
+  pc.addEventListener('ondatachannel', () => {
     triggerConnectionState(pc.id, 'ready', commit)
   })
 

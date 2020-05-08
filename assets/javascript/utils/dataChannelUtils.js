@@ -9,14 +9,17 @@ export function getLocalStream() {
   return _localStream
 }
 
-export async function onDataChannelMessage(dataChannelEvent) {
+export async function onDataChannelMessage(
+  dataChannelEvent,
+  dataChannelToSend
+) {
   console.log('onDataChannel', dataChannelEvent)
   if (dataChannelEvent.data === TAKE_PHOTO) {
     const imageCapture = new ImageCapture(_localStream.getVideoTracks()[0])
     const blob = await imageCapture.takePhoto()
     const dataUrl = await blobToDataURL(blob)
     const chunks = dataUrlToChunkedArray(dataUrl)
-    sendChunkedArray(chunks, dataChannelEvent.target)
+    sendChunkedArray(chunks, dataChannelToSend)
   } else {
     try {
       const data = JSON.parse(dataChannelEvent.data)
