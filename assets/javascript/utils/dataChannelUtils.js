@@ -10,7 +10,7 @@ export function getLocalStream() {
 }
 
 export async function onDataChannelMessage(dataChannelEvent) {
-  debugger
+  console.log('onDataChannel', dataChannelEvent)
   if (dataChannelEvent.data === TAKE_PHOTO) {
     const imageCapture = new ImageCapture(_localStream.getVideoTracks()[0])
     const blob = await imageCapture.takePhoto()

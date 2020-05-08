@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid'
+import { onDataChannelMessage } from '@/assets/javascript/utils/dataChannelUtils'
 
 export class PeerConnection extends EventTarget {
   /**
@@ -12,6 +13,15 @@ export class PeerConnection extends EventTarget {
 
     this.id = nanoid()
     this._pc = new RTCPeerConnection(config)
+    this.dataChannel = this._pc.createDataChannel('123')
+
+    this._pc.ondatachannel = (event) => {
+      this.dispatchEvent(new Event('ondatachannel'))
+      event.channel.addEventListener('message', (event2) => {
+        onDataChannelMessage(event2)
+      })
+    }
+
     this._pc.addEventListener('icecandidate', (event) =>
       this._onIceCandidate(event)
     )
