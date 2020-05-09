@@ -42,6 +42,23 @@ function saveToDisk(data, fileName) {
   a.click()
 }
 
+function generateName() {
+  let numberString = localStorage.getItem('photoNumber')
+  if (!numberString) {
+    localStorage.setItem('photoNumber', 0)
+    numberString = '0'
+  }
+  let numberInt = Number.parseInt(numberString)
+  numberInt += 1
+  localStorage.setItem('photoNumber', numberInt)
+
+  numberString = numberInt.toString()
+
+  while (numberString.length < 4) numberString = '0' + numberString
+
+  return `IMG${numberString}.png`
+}
+
 function collectChunk(chunk) {
   if (!blobsBuffer[chunk.id]) {
     blobsBuffer[chunk.id] = []
@@ -52,7 +69,7 @@ function collectChunk(chunk) {
   if (isFullfilledCollection(collection)) {
     blobsBuffer[chunk.id] = null
     const dataUrl = unwrapChanks(collection).join('')
-    saveToDisk(dataUrl, '1.png')
+    saveToDisk(dataUrl, generateName())
   }
 }
 
