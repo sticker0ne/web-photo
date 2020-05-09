@@ -1,12 +1,29 @@
 <template>
   <v-dialog :value="socketId" max-width="500" persistent>
     <v-card>
-      <v-card-title class="headline">Выбирите роль устройства</v-card-title>
+      <v-card-title class="headline">Выбирите роль</v-card-title>
+      <v-card-text>
+        <div class="role-desc">
+          <div class="role-desc-icon">
+            <v-icon color="black">mdi-camera</v-icon>
+          </div>
+          <div class="role-desc-text">Фотограф видит вас, вы видите себя</div>
+        </div>
+        <div class="role-desc">
+          <div class="role-desc-icon">
+            <v-icon color="black">mdi-camera</v-icon>
+            +
+            <v-icon color="black">mdi-monitor</v-icon>
+          </div>
+          <div class="role-desc-text">
+            Фотограф видит и слышит вас, вы видите и слышите фотографа и себя
+          </div>
+        </div>
+      </v-card-text>
 
       <v-card-actions>
         <v-btn x-large width="45%" @click="confirmDialog(ROLE_CAMERA)">
           <v-icon dark>mdi-camera</v-icon>
-          Камера
         </v-btn>
         <v-btn
           x-large
@@ -14,8 +31,9 @@
           class="ml-auto"
           @click="confirmDialog(ROLE_MONITOR)"
         >
+          <v-icon dark>mdi-camera</v-icon>
+          +
           <v-icon dark>mdi-monitor</v-icon>
-          Монитор
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -49,5 +67,33 @@ export default {
 .v-card__text,
 .v-card__title {
   word-break: normal; /* maybe !important  */
+}
+
+.role-desc {
+  display: flex;
+  align-items: center;
+
+  &:last-child {
+    margin-top: 12px;
+  }
+
+  &-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 55px;
+    min-width: 55px;
+  }
+
+  &-text {
+    margin-left: 10px;
+  }
+}
+</style>
+
+<style lang="scss">
+.v-dialog {
+  margin-left: 6px;
+  margin-right: 6px;
 }
 </style>
