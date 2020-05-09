@@ -1,35 +1,21 @@
 <template>
-  <v-app dark>
-    <h1 v-if="error.statusCode === 404">
-      {{ pageNotFound }}
-    </h1>
-    <h1 v-else>
-      {{ otherError }}
-    </h1>
-    <NuxtLink to="/">
-      Home page
-    </NuxtLink>
-  </v-app>
+  <div class="error-page-wrapper">
+    <h1 class="font-weight-bold mb-4">{{ error.title }}</h1>
+    <h2>{{ error.message }}</h2>
+  </div>
 </template>
 
 <script>
 export default {
-  layout: 'empty',
+  layout: 'errorLayout',
   props: {
     error: {
       type: Object,
       default: null
     }
   },
-  data() {
-    return {
-      pageNotFound: '404 Not Found',
-      otherError: 'An error occurred'
-    }
-  },
   head() {
-    const title =
-      this.error.statusCode === 404 ? this.pageNotFound : this.otherError
+    const title = this.error.title
     return {
       title
     }
@@ -37,8 +23,20 @@ export default {
 }
 </script>
 
-<style scoped>
-h1 {
-  font-size: 20px;
+<style scoped lang="scss">
+.error-page-wrapper {
+  background-color: #343334;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+h1,
+h2 {
+  text-align: center;
 }
 </style>

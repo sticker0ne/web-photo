@@ -47,7 +47,13 @@ export const actions = {
     commit('SET_ROOM_ID', '')
   },
   socket_error({ commit }, event) {
-    console.error(`Socket error: ${event}`)
+    if (event.code === 0) {
+      window.$nuxt.error({
+        statusCode: 404,
+        title: 'Сессия не найдена',
+        message: 'Попросите фотографа отправить вам свежую ссылку'
+      })
+    }
   },
   socket_roomCreated({ commit, state }, event) {
     if (!state.roomId?.length) commit('SET_ROOM_ID', event.roomId)
