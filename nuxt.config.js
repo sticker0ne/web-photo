@@ -39,8 +39,7 @@ export default {
   plugins: [
     '~/plugins/vueUse',
     '~/plugins/peerSetup',
-    '~/plugins/globalEventListeners',
-    '~/node_modules/image-capture/lib/imagecapture.js'
+    '~/plugins/globalEventListeners'
   ],
   /*
    ** Nuxt.js dev-modules
