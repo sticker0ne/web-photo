@@ -1,12 +1,17 @@
 <template>
   <div class="invite-new-user-dialog-wrapper">
-    <v-btn color="grey" class="ma-2 white--text" @click="openInviteDialog">
-      <v-icon dark>mdi-plus</v-icon>
-      Пригласить пользователя
+    <v-btn
+      color="orange"
+      class="ma-2 white--text"
+      @click="openInviteDialog"
+      outlined
+    >
+      <v-icon>mdi-account-multiple-plus</v-icon>
+      <div class="ml-2">Пригласить модель</div>
     </v-btn>
     <v-dialog v-model="showDialog" max-width="500">
       <v-card>
-        <v-card-title class="headline">Ссылка</v-card-title>
+        <v-card-title class="headline">Отправьте ссылку</v-card-title>
         <v-text-field
           ref="linkTextArea"
           class="px-3"
