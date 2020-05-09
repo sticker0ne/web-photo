@@ -1,13 +1,20 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <stream-player :stream="localStream" hide-actions muted fixed />
+      <stream-player
+        :stream="localStream"
+        hide-actions
+        muted
+        fixed
+        placeholder-text="Вы"
+      />
       <stream-player
         v-for="connection in connections"
         :key="connection.id"
         :stream="connection.stream"
         :data-channel="connection.dataChannel"
         label="camera"
+        placeholder-text="Модель"
       />
     </v-flex>
   </v-layout>

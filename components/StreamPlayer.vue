@@ -9,7 +9,6 @@
       'max-height': fullscreenSizeClass === 'max-height'
     }"
   >
-    <v-card-title v-if="label.length">{{ label }}</v-card-title>
     <div class="video-wrapper">
       <video
         ref="localStreamPlayer"
@@ -24,7 +23,7 @@
     <div v-if="showPlaceholder" class="video-placeholder">
       <img class="person-icon" src="icons/person-black-18dp.svg" />
       <div class="break" />
-      <div class="placeholder-text">You</div>
+      <div class="placeholder-text">{{ placeholderText }}</div>
     </div>
     <switch-camera v-if="showCameraSwitchButton && showSwitchCamera" />
     <v-card-actions v-if="!hideActions">
@@ -53,7 +52,7 @@ export default {
       type: RTCDataChannel,
       default: null
     },
-    label: {
+    placeholderText: {
       type: String,
       default: ''
     },

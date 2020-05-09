@@ -7,6 +7,7 @@
         muted
         full-screen
         show-camera-switch-button
+        placeholder-text="Вы"
       />
     </v-flex>
   </v-layout>

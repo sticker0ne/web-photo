@@ -7,6 +7,7 @@
         muted
         fixed
         show-camera-switch-button
+        placeholder-text="Вы"
       />
       <stream-player
         v-for="connection in connections"
@@ -15,6 +16,7 @@
         :data-channel="connection.dataChannel"
         hide-actions
         full-screen
+        placeholder-text="Фотограф"
       />
     </v-flex>
   </v-layout>
