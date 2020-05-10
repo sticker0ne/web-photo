@@ -9,14 +9,13 @@
       'max-height': fullscreenSizeClass === 'max-height'
     }"
   >
-    <div class="video-wrapper">
+    <div class="video-wrapper" @click.prevent.stop="$emit('click')">
       <video
         ref="localStreamPlayer"
         autoplay
         playsinline
         :muted="muted"
-        @click.prevent.stop
-        @touchstart.prevent.stop
+        @click.prevent.stop="$emit('click')"
       />
     </div>
 
