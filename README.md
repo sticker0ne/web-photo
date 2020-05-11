@@ -1,6 +1,6 @@
 # web-photo
 
-> web-photo mvp
+> WEB PHOTO STUDIO
 
 ## Build Setup
 

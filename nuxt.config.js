@@ -15,7 +15,7 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: process.env.npm_package_description || ''
+        content: ''
       }
     ],
     script: [{ src: '/polyfills/eventTargetPolyfill.js' }],
