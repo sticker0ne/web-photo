@@ -30,7 +30,7 @@
         :stream="mainConnection.stream"
         :data-channel="mainConnection.dataChannel"
         label="camera"
-        placeholder-text="Модель"
+        placeholder-text=" "
       />
     </div>
   </v-layout>
