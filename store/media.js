@@ -30,8 +30,8 @@ export const actions = {
     } catch (e) {
       window.$nuxt.error({
         statusCode: 404,
-        title: 'Разрешите доступ к камере',
-        message: 'Перезагрузите страницу и разрешите доступ к камере'
+        title: 'Allow the access to the camera',
+        message: 'Reload the page and allow the access to the camera'
       })
     }
     commit('SET_LOCAL_STREAM', stream)

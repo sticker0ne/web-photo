@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       showInviteDialog: false,
-      loaderText: 'Подключение к серверу...'
+      loaderText: 'Connecting...'
     }
   },
   computed: {

@@ -1,13 +1,15 @@
 <template>
   <v-dialog :value="socketId" max-width="500" persistent>
     <v-card>
-      <v-card-title class="headline">Выбирите роль</v-card-title>
+      <v-card-title class="headline">Choose role</v-card-title>
       <v-card-text>
         <div class="role-desc">
           <div class="role-desc-icon">
             <v-icon color="black">mdi-camera</v-icon>
           </div>
-          <div class="role-desc-text">Фотограф видит вас, вы видите себя</div>
+          <div class="role-desc-text">
+            The photographer is able to see you, you are able to see yourself
+          </div>
         </div>
         <div class="role-desc">
           <div class="role-desc-icon">
@@ -16,7 +18,8 @@
             <v-icon color="black">mdi-monitor</v-icon>
           </div>
           <div class="role-desc-text">
-            Фотограф видит и слышит вас, вы видите и слышите фотографа и себя
+            The photographer is able to see and hear you, you are able to see
+            and hear PH
           </div>
         </div>
       </v-card-text>

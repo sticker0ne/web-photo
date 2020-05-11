@@ -50,16 +50,15 @@ export const actions = {
     if (event.code === 0) {
       window.$nuxt.error({
         statusCode: 404,
-        title: 'Сессия не найдена',
-        message: 'Попросите фотографа отправить вам свежую ссылку'
+        title: 'Session was not found',
+        message: 'Ask photographer for new invite link'
       })
     }
     if (event.code === 1) {
       window.$nuxt.error({
         statusCode: 404,
-        title: 'Фотограф отключился',
-        message:
-          'Попросите фотографа подключиться и отправить вам свежую ссылку'
+        title: 'Photographer is offline',
+        message: 'Ask photographer to create new session'
       })
     }
   },

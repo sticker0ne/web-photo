@@ -27,7 +27,7 @@
     <switch-camera v-if="showCameraSwitchButton && showSwitchCamera" />
     <v-card-actions v-if="!hideActions">
       <v-btn color="orange" text @click="takePhoto">
-        Сделать фотографию
+        Take photo
       </v-btn>
     </v-card-actions>
   </v-card>

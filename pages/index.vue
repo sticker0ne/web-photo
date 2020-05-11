@@ -7,7 +7,7 @@
         :stream="connection.stream"
         :data-channel="connection.dataChannel"
         label="camera"
-        placeholder-text="Модель"
+        placeholder-text="Model"
         video-border-radius="5px"
         hide-actions
         @click="setMainConnectionId(connection.id)"
@@ -19,7 +19,7 @@
         :stream="localStream"
         hide-actions
         muted
-        placeholder-text="Вы"
+        placeholder-text="You"
       />
     </v-navigation-drawer>
 

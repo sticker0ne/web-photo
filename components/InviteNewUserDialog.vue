@@ -7,26 +7,26 @@
       outlined
     >
       <v-icon>mdi-account-multiple-plus</v-icon>
-      <div class="ml-2">Пригласить модель</div>
+      <div class="ml-2">Invite model</div>
     </v-btn>
     <v-dialog v-model="showDialog" max-width="500">
       <v-card>
-        <v-card-title class="headline">Отправьте ссылку</v-card-title>
+        <v-card-title class="headline">Send invite link</v-card-title>
         <v-text-field
           ref="linkTextArea"
           class="px-3"
           :value="link || inviteLink"
         />
         <div v-if="isSafari" class="red--text ml-4">
-          Пожалуйста, используйте chrome, в safari плохое качество
+          Please use the chrome instead of safari for better quality
         </div>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="green darken-1" text @click="copyLinkToClipboard">
-            Копировать
+            Copy
           </v-btn>
           <v-btn color="red darken-1" text @click="closeInviteDialog">
-            Закрыть
+            Close
           </v-btn>
         </v-card-actions>
       </v-card>
