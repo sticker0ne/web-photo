@@ -1,4 +1,5 @@
 import { TAKE_PHOTO } from '@/assets/javascript/constants'
+import { eventBus } from '@/assets/javascript/utils/eventBus'
 const blobsBuffer = {}
 
 let _localStream = null
@@ -48,6 +49,7 @@ function saveToDisk(data, fileName) {
   a.href = data
   a.download = fileName
   a.click()
+  eventBus.$emit('saveToDisk')
 }
 
 function generateName() {

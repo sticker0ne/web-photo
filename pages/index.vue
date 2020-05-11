@@ -50,7 +50,14 @@ export default {
     }
   },
   watch: {
-    connections(newValue) {
+    connections(newValue, oldValue) {
+      this.$metrika.hit(
+        '/model-' +
+          (newValue?.length < oldValue?.length ? 'dis' : '') +
+          'connected-total-is-' +
+          (newValue?.length || 0)
+      )
+
       if (!newValue.length) {
         this.mainConnection = null
         this.mainConnectionId = null

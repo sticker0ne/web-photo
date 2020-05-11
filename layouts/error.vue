@@ -16,6 +16,9 @@ export default {
   },
   mounted() {
     this.$socket.disconnect()
+    this.$metrika.hit(
+      `/error-${this.error.metrikaUrl || encodeURIComponent(this.error)}`
+    )
   },
   head() {
     const title = this.error.title

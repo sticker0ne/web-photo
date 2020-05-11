@@ -37,7 +37,11 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~/plugins/vueUse', '~/plugins/socket.io'],
+  plugins: [
+    '~/plugins/vueUse',
+    '~/plugins/socket.io',
+    '~/plugins/yandexMetrika'
+  ],
   /*
    ** Nuxt.js dev-modules
    */

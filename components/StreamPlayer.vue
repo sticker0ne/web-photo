@@ -132,6 +132,7 @@ export default {
       this.windowWidth = window.innerWidth
     },
     takePhoto() {
+      this.$metrika.hit('/takePhoto')
       this.dataChannel.send('TAKE_PHOTO')
     },
     applySettingsByStream(stream) {

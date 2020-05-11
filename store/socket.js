@@ -49,6 +49,7 @@ export const actions = {
   socket_error({ commit }, event) {
     if (event.code === 0) {
       window.$nuxt.error({
+        metrikaUrl: 'oldSession',
         statusCode: 404,
         title: 'Session was not found',
         message: 'Ask photographer for new invite link'
@@ -56,6 +57,7 @@ export const actions = {
     }
     if (event.code === 1) {
       window.$nuxt.error({
+        metrikaUrl: 'photographerDisconnect',
         statusCode: 404,
         title: 'Photographer is offline',
         message: 'Ask photographer to create new session'

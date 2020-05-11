@@ -13,6 +13,7 @@ export default {
       switchCamera: 'media/switchCamera'
     }),
     async onSwitchCamera() {
+      this.$metrika.hit('/switchCamera')
       await this.switchCamera()
     }
   }

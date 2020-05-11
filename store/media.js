@@ -29,6 +29,7 @@ export const actions = {
       stream = await requestMedia(params)
     } catch (e) {
       window.$nuxt.error({
+        metrikaUrl: 'notAllowedCamera',
         statusCode: 404,
         title: 'Allow the access to the camera',
         message: 'Reload the page and allow the access to the camera'

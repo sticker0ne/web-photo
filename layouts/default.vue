@@ -19,6 +19,7 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import InviteNewUserDialog from '@/components/InviteNewUserDialog'
 import { PATH_ROLE_MAP, ROLE_PHOTOGRAPH } from '@/assets/javascript/constants'
+import { eventBus } from '@/assets/javascript/utils/eventBus'
 
 export default {
   components: { InviteNewUserDialog },
@@ -44,6 +45,9 @@ export default {
   mounted() {
     this.setPhotographTokenFromRoute()
     this.setRoleFromRoute()
+    eventBus.$on('saveToDisk', () => {
+      this.$metrika.hit('/saveToDisk')
+    })
   },
   methods: {
     ...mapMutations({

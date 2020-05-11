@@ -75,6 +75,7 @@ export default {
     }),
 
     closeInviteDialog() {
+      this.$metrika.hit('/closeInviteDialog')
       this.showDialog = false
     },
     async openInviteDialog() {
@@ -86,10 +87,12 @@ export default {
         })
       if (!this.localStream) return
       this.showDialog = true
+      this.$metrika.hit('/openInviteDialog')
     },
     copyLinkToClipboard() {
       this.selectText()
       document.execCommand('copy')
+      this.$metrika.hit('/onCopyLink')
     },
     selectText() {
       this.$refs.linkTextArea.focus()
