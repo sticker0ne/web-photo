@@ -10,12 +10,10 @@ export default {
   name: 'SwitchCamera',
   methods: {
     ...mapActions({
-      switchCamera: 'media/switchCamera',
-      reCallPhotograph: 'photograph/reCallPhotograph'
+      switchCamera: 'media/switchCamera'
     }),
     async onSwitchCamera() {
       await this.switchCamera()
-      await this.reCallPhotograph(this.$peer)
     }
   }
 }

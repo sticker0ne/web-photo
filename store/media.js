@@ -28,11 +28,23 @@ export const actions = {
   },
 
   async switchCamera({ state, dispatch }) {
+    const wrappedConnections = await dispatch('webRTC/gc', {}, { root: true })
+    const connection = wrappedConnections[0]._pc
+    const senders = connection.getSenders()
+    const videoSender = senders.find(
+      (sender) => sender?.track?.kind === 'video'
+    )
+
     const params = { ...state.params }
     params.facingMode === 'user'
       ? (params.facingMode = 'environment')
       : (params.facingMode = 'user')
 
-    return await dispatch('requestAndSetLocalStream', params)
+    const newLocalStream = await dispatch('requestAndSetLocalStream', params)
+    const tracks = newLocalStream.getVideoTracks()
+    const videoTrack = tracks[0]
+
+    videoSender.replaceTrack(videoTrack)
+    return newLocalStream
   }
 }

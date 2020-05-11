@@ -11,7 +11,7 @@ export const requestMedia = ({
 
   video = video
     ? {
-        width: { ideal: 2048 },
+        width: { ideal: 1920 },
         height: { ideal: 1080 },
         frameRate: {
           ideal: 30
