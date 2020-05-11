@@ -36,7 +36,6 @@ export default {
   async mounted() {
     await this.requestAndSetLocalStream({
       audio: true,
-      video: true,
       facingMode: 'user'
     })
     this.emitCallMe()

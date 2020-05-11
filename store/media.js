@@ -2,7 +2,8 @@ import { requestMedia } from '@/assets/javascript/utils/userMedia'
 
 export const state = () => ({
   localStream: null,
-  params: null
+  params: null,
+  resolution: [1920, 1080]
 })
 
 export const mutations = {
@@ -11,14 +12,18 @@ export const mutations = {
   },
   SET_PARAMS(state, payload) {
     state.params = payload
+  },
+  SET_RESOLUTION(state, payload) {
+    state.resolution = payload
   }
 }
 
 export const actions = {
   async requestAndSetLocalStream(
-    { commit },
-    params = { audio: false, video: [1280, 720], facingMode: 'user' }
+    { commit, state },
+    params = { audio: false, resolution: state.resolution, facingMode: 'user' }
   ) {
+    params.resolution = state.resolution
     const stream = await requestMedia(params)
     commit('SET_LOCAL_STREAM', stream)
     commit('SET_PARAMS', params)

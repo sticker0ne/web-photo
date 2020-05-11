@@ -18,7 +18,10 @@ export default {
     chooseRole(role) {
       this.$router.push({
         path: pathMapper[role],
-        query: { photographToken: this.$route.query.photographToken }
+        query: {
+          photographToken: this.$route.query.photographToken,
+          forceHD: this.$route.query.forceHD
+        }
       })
     }
   }

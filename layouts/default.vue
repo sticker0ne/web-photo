@@ -46,7 +46,10 @@ export default {
     this.setRoleFromRoute()
   },
   methods: {
-    ...mapMutations({ setPhotographToken: 'SET_PHOTOGRAPH_TOKEN' }),
+    ...mapMutations({
+      setPhotographToken: 'SET_PHOTOGRAPH_TOKEN',
+      setResolution: 'media/SET_RESOLUTION'
+    }),
     ...mapActions({ setRole: 'setRole' }),
 
     setPhotographTokenFromRoute() {
@@ -62,12 +65,16 @@ export default {
 
       if (!role || this.role.length) return
       this.setRole(role)
+    },
+    setResolutionFromRoute() {
+      if (this.$route.query.forceHD?.length) this.setResolution([1280, 720])
     }
   },
   watch: {
     $route() {
       this.setPhotographTokenFromRoute()
       this.setRoleFromRoute()
+      this.setResolutionFromRoute()
     }
   }
 }

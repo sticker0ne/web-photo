@@ -17,6 +17,9 @@
           class="px-3"
           :value="link || inviteLink"
         />
+        <div v-if="isSafari" class="red--text ml-4">
+          Пожалуйста, используйте chrome, в safari плохое качество
+        </div>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="green darken-1" text @click="copyLinkToClipboard">
@@ -43,8 +46,14 @@ export default {
   },
   data() {
     return {
-      showDialog: false
+      showDialog: false,
+      isSafari: false
     }
+  },
+  mounted() {
+    const usrAgent = navigator.userAgent.toLowerCase()
+    const isSafari = usrAgent.includes('safari') && !usrAgent.includes('chrome')
+    this.isSafari = isSafari
   },
   computed: {
     ...mapState({
@@ -55,7 +64,8 @@ export default {
       return (
         process.env.INVITE_HOST +
         '/connect?photographToken=' +
-        this.photographToken
+        encodeURIComponent(this.photographToken) +
+        (this.isSafari ? '&forceHD=true' : '')
       )
     }
   },
@@ -71,7 +81,7 @@ export default {
       if (!this.localStream)
         await this.requestAndSetLocalStream({
           audio: true,
-          video: true,
+          resolution: [1280, 720],
           facingMode: 'user'
         })
       if (!this.localStream) return

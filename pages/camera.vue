@@ -27,7 +27,6 @@ export default {
   async mounted() {
     await this.requestAndSetLocalStream({
       audio: false,
-      video: true,
       facingMode: 'environment'
     })
     this.emitCallMe()
