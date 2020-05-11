@@ -3,7 +3,7 @@ import VueSocketIO from 'vue-socket.io'
 
 export default function({ store }) {
   const socket = new VueSocketIO({
-    debug: true,
+    debug: false,
     connection: 'wss://mirt.webshot.me',
     vuex: {
       store,

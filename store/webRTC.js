@@ -37,7 +37,6 @@ export const mutations = {
 
 export const actions = {
   createRTCConnection({ rootState, commit }, payload) {
-    console.log('createRTCConnection')
     return createAndSubscribeConnection(
       rootState,
       commit,
@@ -47,7 +46,6 @@ export const actions = {
   },
 
   setOffer({ commit, rootState }, payload) {
-    console.log('setOffer')
     return createAndSubscribeConnection(
       rootState,
       commit,
@@ -56,7 +54,6 @@ export const actions = {
     )
   },
   setAnswer({ commit }, wrappedAnswer) {
-    console.log('setAnswer')
     const session = new RTCSessionDescription(wrappedAnswer.answer)
     wrappedConnections[wrappedAnswer.connectionId].setAnswer(session)
   },

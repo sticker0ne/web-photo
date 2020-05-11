@@ -16,7 +16,6 @@ export async function onDataChannelMessage(
   dataChannelEvent,
   dataChannelToSend
 ) {
-  console.log('onDataChannel', dataChannelEvent)
   if (dataChannelEvent.data === TAKE_PHOTO) {
     const blob = await new Promise((resolve) => {
       const video = document.querySelector('video') // Workaround: Here we need to get HTML5Video element for cheap image capture in safari. Using querySelector is not an obvious/stable way, but it fast to implement.
