@@ -152,7 +152,7 @@ export default {
 
   video {
     max-width: calc(100vw - 300px);
-    max-height: calc(100vh - 100px);
+    max-height: calc(100vh - 300px);
   }
 }
 </style>
