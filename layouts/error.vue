@@ -14,6 +14,9 @@ export default {
       default: null
     }
   },
+  mounted() {
+    this.$socket.disconnect()
+  },
   head() {
     const title = this.error.title
     return {

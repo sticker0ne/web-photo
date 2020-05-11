@@ -24,7 +24,16 @@ export const actions = {
     params = { audio: false, resolution: state.resolution, facingMode: 'user' }
   ) {
     params.resolution = state.resolution
-    const stream = await requestMedia(params)
+    let stream = null
+    try {
+      stream = await requestMedia(params)
+    } catch (e) {
+      window.$nuxt.error({
+        statusCode: 404,
+        title: 'Разрешите доступ к камере',
+        message: 'Перезагрузите страницу и разрешите доступ к камере'
+      })
+    }
     commit('SET_LOCAL_STREAM', stream)
     commit('SET_PARAMS', params)
     return stream
