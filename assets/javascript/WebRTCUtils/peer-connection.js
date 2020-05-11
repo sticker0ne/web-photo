@@ -5,19 +5,22 @@ export class PeerConnection extends EventTarget {
   /**
    * @param {Object} config
    */
-  constructor(config) {
+  constructor(config, socketId) {
     super()
 
     this.stream = null
     this.dataChannel = null
 
     this.id = nanoid()
+    this.socketId = socketId
     this._pc = new RTCPeerConnection(config)
     this.dataChannel = this._pc.createDataChannel('123')
 
     this._pc.ondatachannel = (event) => {
       this.dispatchEvent(new Event('ondatachannel'))
-      event.channel.addEventListener('message', (event2) => {
+
+      const channel = event.channel
+      channel.addEventListener('message', (event2) => {
         onDataChannelMessage(event2, this.dataChannel)
       })
     }
@@ -28,6 +31,22 @@ export class PeerConnection extends EventTarget {
     this._pc.addEventListener('track', (event) => this._onTrack(event))
     this._pc.onsignalingstatechange = (event) => {
       if (event.target.signalingState === 'stable') window.pc = event.target
+    }
+
+    this._pc.onconnectionstatechange = (event) => {
+      if (
+        event.target.connectionState === 'failed' ||
+        event.target.iceConnectionState === 'disconnected'
+      )
+        this.dispatchEvent(new Event('error'))
+    }
+
+    this._pc.oniceconnectionstatechange = (event) => {
+      if (
+        event.target.connectionState === 'failed' ||
+        event.target.iceConnectionState === 'disconnected'
+      )
+        this.dispatchEvent(new Event('error'))
     }
   }
 

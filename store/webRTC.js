@@ -27,18 +27,33 @@ export const mutations = {
     const clonedConnections = { ...state.connections }
     clonedConnections[payload.id] = payload.state
     state.connections = { ...clonedConnections }
+  },
+  REMOVE_CONNECTION(state, payload) {
+    const clonedConnections = { ...state.connections }
+    delete clonedConnections[payload]
+    state.connections = { ...clonedConnections }
   }
 }
 
 export const actions = {
-  createRTCConnection({ rootState, commit }) {
+  createRTCConnection({ rootState, commit }, payload) {
     console.log('createRTCConnection')
-    return createAndSubscribeConnection(rootState, commit)
+    return createAndSubscribeConnection(
+      rootState,
+      commit,
+      null,
+      payload.socketId
+    )
   },
 
-  setOffer({ commit, rootState }, offer) {
+  setOffer({ commit, rootState }, payload) {
     console.log('setOffer')
-    return createAndSubscribeConnection(rootState, commit, offer)
+    return createAndSubscribeConnection(
+      rootState,
+      commit,
+      payload.offer,
+      payload.socketId
+    )
   },
   setAnswer({ commit }, wrappedAnswer) {
     console.log('setAnswer')
@@ -46,8 +61,19 @@ export const actions = {
     wrappedConnections[wrappedAnswer.connectionId].setAnswer(session)
   },
 
+  removeConnectionBySocketId({ commit }, payload) {
+    const connections = Object.values(wrappedConnections)
+    const connectionForRemoving = connections.find(
+      (connection) => connection.socketId === payload
+    )
+
+    if (connectionForRemoving) {
+      removePC(connectionForRemoving.id, commit)
+    }
+  },
+
   gc() {
-    return wrappedConnections
+    return Object.values(wrappedConnections)
   }
 }
 
@@ -61,9 +87,9 @@ function triggerConnectionState(connectionId, state, commit) {
   })
 }
 
-function createAndSubscribeConnection(rootState, commit, offer) {
+function createAndSubscribeConnection(rootState, commit, offer, socketId) {
   // Creates and subscribe pc
-  const pc = new PeerConnection({ iceServers: STUN_SERVERS })
+  const pc = new PeerConnection({ iceServers: STUN_SERVERS }, socketId)
   const stream = rootState.media.localStream
 
   pc.addStream(stream)
@@ -76,6 +102,10 @@ function createAndSubscribeConnection(rootState, commit, offer) {
 
   pc.addEventListener('dataChannelMessage', (event) => {
     onDataChannelMessage(event.dataChannelEvent)
+  })
+
+  pc.addEventListener('error', () => {
+    removePC(pc.id, commit)
   })
 
   wrappedConnections[pc.id] = pc
@@ -99,4 +129,9 @@ function createAndSubscribeConnection(rootState, commit, offer) {
       const session = new RTCSessionDescription(offer)
       pc.setOffer(session)
     })
+}
+
+function removePC(pcId, commit) {
+  commit('REMOVE_CONNECTION', pcId)
+  delete wrappedConnections[pcId]
 }

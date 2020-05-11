@@ -54,6 +54,17 @@ export const actions = {
         message: 'Попросите фотографа отправить вам свежую ссылку'
       })
     }
+    if (event.code === 1) {
+      window.$nuxt.error({
+        statusCode: 404,
+        title: 'Фотограф отключился',
+        message:
+          'Попросите фотографа подключиться и отправить вам свежую ссылку'
+      })
+    }
+  },
+  socket_clientDisconnect({ dispatch }, event) {
+    dispatch('webRTC/removeConnectionBySocketId', event, { root: true })
   },
   socket_roomCreated({ commit, state }, event) {
     if (!state.roomId?.length) commit('SET_ROOM_ID', event.roomId)
@@ -78,7 +89,7 @@ export const actions = {
     if (event.payload.photographToken === state.socketId) {
       const wrappedOffer = await dispatch(
         'webRTC/createRTCConnection',
-        {},
+        { socketId: event.clientId },
         { root: true }
       )
 
@@ -98,7 +109,7 @@ export const actions = {
       const connectionId = event.payload.wrappedOffer.connectionId
       const answer = await dispatch(
         'webRTC/setOffer',
-        event.payload.wrappedOffer.offer,
+        { offer: event.payload.wrappedOffer.offer, socketId: event.clientId },
         {
           root: true
         }
