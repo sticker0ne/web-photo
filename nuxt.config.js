@@ -15,7 +15,7 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: ''
+        content: 'WEB PHOTO STUDIO'
       }
     ],
     script: [{ src: '/polyfills/eventTargetPolyfill.js' }],
