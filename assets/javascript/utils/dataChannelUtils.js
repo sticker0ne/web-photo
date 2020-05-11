@@ -9,14 +9,23 @@ export function getLocalStream() {
   return _localStream
 }
 
+const canvasElement = document.createElement('canvas')
+const ctx = canvasElement.getContext('2d')
+
 export async function onDataChannelMessage(
   dataChannelEvent,
   dataChannelToSend
 ) {
   console.log('onDataChannel', dataChannelEvent)
   if (dataChannelEvent.data === TAKE_PHOTO) {
-    const imageCapture = new ImageCapture(_localStream.getVideoTracks()[0])
-    const blob = await imageCapture.takePhoto()
+    const blob = await new Promise((resolve) => {
+      const video = document.querySelector('video') // Workaround: Here we need to get HTML5Video element for cheap image capture in safari. Using querySelector is not an obvious/stable way, but it fast to implement.
+      canvasElement.width = video.videoWidth
+      canvasElement.height = video.videoHeight
+      ctx.drawImage(video, 0, 0)
+      canvasElement.toBlob(resolve)
+    })
+
     const dataUrl = await blobToDataURL(blob)
     const chunks = dataUrlToChunkedArray(dataUrl)
     sendChunkedArray(chunks, dataChannelToSend)
