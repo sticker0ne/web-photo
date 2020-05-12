@@ -16,6 +16,11 @@ export default {
         hid: 'description',
         name: 'description',
         content: 'WEB PHOTO STUDIO'
+      },
+      {
+        hid: 'author',
+        name: 'author',
+        content: 'WEB PHOTO STUDIO'
       }
     ],
     script: [{ src: '/polyfills/eventTargetPolyfill.js' }],
