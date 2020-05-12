@@ -23,14 +23,15 @@
       />
     </v-navigation-drawer>
 
-    <div class="mainStream-wrapper">
+    <div class="main-stream-wrapper">
       <stream-player
         v-if="mainConnection"
-        class="mainStream"
+        class="main-stream"
         :stream="mainConnection.stream"
         :data-channel="mainConnection.dataChannel"
         label="camera"
         placeholder-text=" "
+        main-stream
       />
     </div>
   </v-layout>
@@ -146,7 +147,7 @@ export default {
   }
 }
 
-.mainStream-wrapper {
+.main-stream-wrapper {
   position: fixed;
   left: 261px;
   top: 5px;
@@ -159,7 +160,7 @@ export default {
 
   video {
     max-width: calc(100vw - 300px);
-    max-height: calc(100vh - 300px);
+    max-height: calc(100vh - 100px);
   }
 }
 </style>

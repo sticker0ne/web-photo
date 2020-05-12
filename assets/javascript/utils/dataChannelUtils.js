@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid'
 import { TAKE_PHOTO } from '@/assets/javascript/constants'
 import { eventBus } from '@/assets/javascript/utils/eventBus'
 const blobsBuffer = {}
@@ -52,6 +53,20 @@ function saveToDisk(data, fileName) {
   eventBus.$emit('saveToDisk')
 }
 
+export async function takeAndSavePhotoFromLocalStream() {
+  const blob = await new Promise((resolve, reject) => {
+    const video = document.querySelector('#main-stream-id') // Workaround: Here we need to get HTML5Video element for cheap image capture in safari. Using querySelector is not an obvious/stable way, but it fast to implement.
+    if (!video) reject(new Error('no video found'))
+    canvasElement.width = video.videoWidth
+    canvasElement.height = video.videoHeight
+    ctx.drawImage(video, 0, 0)
+    canvasElement.toBlob(resolve)
+  })
+
+  const dataUrl = await blobToDataURL(blob)
+  saveToDisk(dataUrl, 'L_' + generateName())
+}
+
 function generateName() {
   let numberString = localStorage.getItem('photoNumber')
   if (!numberString) {
@@ -79,7 +94,7 @@ function collectChunk(chunk) {
   if (isFullfilledCollection(collection)) {
     blobsBuffer[chunk.id] = null
     const dataUrl = unwrapChanks(collection).join('')
-    saveToDisk(dataUrl, generateName())
+    saveToDisk(dataUrl, 'O_' + generateName())
   }
 }
 
@@ -119,9 +134,8 @@ export async function sendChunkedArray(chunkedArray, dataChannel) {
   }
 }
 
-// TODO swap Math random to nanoId
 export function wrapChunks(chunks) {
-  const id = Math.random()
+  const id = nanoid()
   return chunks.map((chunk, index) => ({
     chunk,
     id,
@@ -138,19 +152,6 @@ export function unwrapChanks(wrappedChunks) {
   return sortedChunks.map((wrappedChunk) => wrappedChunk.chunk)
 }
 
-export function dataURLtoBlob(dataurl) {
-  const arr = dataurl.split(',')
-  const mime = arr[0].match(/:(.*?);/)[1]
-  const bstr = atob(arr[1])
-  let n = bstr.length
-  const u8arr = new Uint8Array(n)
-  while (n--) {
-    u8arr[n] = bstr.charCodeAt(n)
-  }
-  return new Blob([u8arr], { type: mime })
-}
-
-//* *blob to dataURL**
 export function blobToDataURL(blob) {
   const a = new FileReader()
   return new Promise((resolve) => {

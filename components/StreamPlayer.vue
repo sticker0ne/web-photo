@@ -11,6 +11,7 @@
   >
     <div class="video-wrapper" @click.prevent.stop="$emit('click')">
       <video
+        :id="mainStream ? 'main-stream-id' : ''"
         ref="localStreamPlayer"
         autoplay
         playsinline
@@ -35,6 +36,7 @@
 
 <script>
 import SwitchCamera from '@/components/SwitchCamera'
+import { takeAndSavePhotoFromLocalStream } from '@/assets/javascript/utils/dataChannelUtils'
 export default {
   name: 'StreamPlayer',
   components: { SwitchCamera },
@@ -72,6 +74,10 @@ export default {
       default: false
     },
     showCameraSwitchButton: {
+      type: Boolean,
+      default: false
+    },
+    mainStream: {
       type: Boolean,
       default: false
     }
@@ -133,6 +139,7 @@ export default {
     },
     takePhoto() {
       this.$metrika.hit('/takePhoto')
+      takeAndSavePhotoFromLocalStream()
       this.dataChannel.send('TAKE_PHOTO')
     },
     applySettingsByStream(stream) {
